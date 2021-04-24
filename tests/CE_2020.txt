@@ -1,0 +1,6 @@
+- GainLossOnDispositionOfAssets -7.0
+- IncomeLossFromDiscontinuedOperationsNetOfTax -12.0
+- AssetImpairmentCharges 31.0
+- OneTimeTerminationBenefits 20.0
+- RestructuringReserveAcceleratedDepreciation 2.0
+TOTAL 34.0

@@ -1,0 +1,2 @@
+- GainLossOnDispositionOfAssets -44.0
+TOTAL -44.0

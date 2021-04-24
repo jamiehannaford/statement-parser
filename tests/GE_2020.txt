@@ -1,0 +1,3 @@
+- GoodwillImpairmentLoss 1717.0
+- IncomeLossFromDiscontinuedOperationsNetOfTax -125.0
+TOTAL 1592.0

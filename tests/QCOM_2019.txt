@@ -1,0 +1,7 @@
+- AssetImpairmentCharges 203.0
+- OtherThanTemporaryImpairmentLossesInvestmentsPortionRecognizedInEarningsNet 135.0
+- GoodwillImpairmentLoss 146.0
+- RestructuringAndRelatedCostIncurredCost 213.0
+- OtherRestructuringCosts 151.0
+- RestructuringCharges 62.0
+TOTAL 910.0

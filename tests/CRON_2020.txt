@@ -1,0 +1,4 @@
+- InventoryWriteDown 26.055
+- GoodwillAndIntangibleAssetImpairment 40.0
+- IncomeLossFromDiscontinuedOperationsNetOfTax -0.65
+TOTAL 65.405

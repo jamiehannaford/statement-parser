@@ -1,0 +1,13 @@
+- RestructureAndImpairmentCharges 48.332
+- RestructuringCharges 8.2
+- AssetImpairmentCharges 40.1
+- GoodwillImpairmentLoss 17.8
+- ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill 6.4
+TOTAL 120.83200000000001
+
+- RestructureAndImpairmentCharges 48.332
+- RestructuringCharges 8.2
+- AssetImpairmentCharges 140.5
+- GoodwillImpairmentLoss 17.8
+- ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill 6.4
+TOTAL 221.232

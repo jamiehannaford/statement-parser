@@ -1,0 +1,15 @@
+- AmortizationOfInventoryStepUp 32.0
+- RestructuringAndRelatedCostIncurredCost 153.0
+- RestructuringCharges 28.0
+- RestructuringCharges 10.0
+- RestructuringCharges 2.0
+- RestructuringCharges 16.0
+- SeveranceCosts1 28.0
+TOTAL 269.0
+
+- RestructuringAndRelatedCostIncurredCost 153.0
+- RestructuringCharges 150.0
+TOTAL 303.0
+
+- IncomeLossFromDiscontinuedOperationsNetOfTax -34.0
+TOTAL -34.0

@@ -1,0 +1,3 @@
+- RestructuringSettlementAndImpairmentProvisions 275.1
+- OtherRestructuringCosts 148.2
+TOTAL 423.3
