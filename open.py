@@ -3,6 +3,7 @@ from datetime import date
 import webbrowser
 
 from statement_parser.utils import get_filing_urls_to_download
+from download import Downloader
 
 parser = argparse.ArgumentParser(description='Download SEC filings.')
 
@@ -16,9 +17,11 @@ count = 1
 if args.type == "10-Q":
     count = 4
 
-urls = get_filing_urls_to_download(args.type, args.ticker, count, 
-    date(args.year, 1, 1).strftime("%Y-%m-%d"), 
-    date(args.year, 12, 31).strftime("%Y-%m-%d"), False)
+from_d = date(args.year, 1, 1).strftime("%Y-%m-%d")
+to_d = date(args.year, 12, 31).strftime("%Y-%m-%d")
+
+d = Downloader(args.ticker, args.type)
+urls = d.get_urls(from_d, to_d)
 
 for url in urls:
     html_url = url.filing_details_url.replace("https://www.sec.gov", "")

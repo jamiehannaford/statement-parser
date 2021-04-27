@@ -9,22 +9,29 @@ from xbrl_parser.cache import HttpCache
 from xbrl_parser.instance import parse_xbrl, TimeFrameContext, InstantContext
 from xbrl_parser.linkbase import PresentationArc
 
-from statement_parser.expenses import Expenses
+from statement_parser.expense_collection import Expenses
 from statement_parser.utils import same_month_year
 
 logging.getLogger("xbrl_parser.cache").setLevel(logging.WARNING)
 
 
 class FileParser:
-    def __init__(self, path, cache_dir = "./cache/"):
+    def __init__(self, path,  cache_dir="./cache/", compare_file=None):
         cache = HttpCache(cache_dir)
         self.instance = parse_xbrl(path, cache, os.path.dirname(path))
-        self.fd_str = os.path.basename(os.path.dirname(path))
+        self.compare_file = compare_file
+        self.api_key = os.environ["API_KEY"]
+        
+        if compare_file and not os.path.isfile(compare_file):
+            raise ValueError(f"{compare_file} does not exist")
 
-        fd_y = self.fd_str[:4]
-        fd_m = self.fd_str[4:6]
-        fd_d = self.fd_str[6:]
-        self.filing_date_end = date(int(fd_y), int(fd_m), int(fd_d))
+        self.fd_str = os.path.basename(os.path.dirname(path))
+        self.ticker = os.path.basename(os.path.dirname(os.path.dirname(path)))
+
+        self.fd_y = self.fd_str[:4]
+        self.fd_m = self.fd_str[4:6]
+        self.fd_d = self.fd_str[6:]
+        self.filing_date_end = date(int(self.fd_y), int(self.fd_m), int(self.fd_d))
         self.filing_date_start = self.filing_date_end - relativedelta(years=1, months=1)
 
     def tag_name(self, name):
@@ -82,17 +89,7 @@ class FileParser:
         return starts_after_filing and ends_before_filing
 
     def process(self):
-        expenses = Expenses(self.instance.taxonomy.pre_linkbases)
-
-        root_concept_ids = []
-        for elr in self.instance.taxonomy.link_roles:
-            if elr.calculation_link is None or len(elr.calculation_link.root_locators) == 0:
-                continue
-            for loc in elr.calculation_link.root_locators:
-                for child in loc.children:
-                    # print(child.to_locator)
-                    root_concept_ids.append(child.to_locator.concept_id)
-
+        expenses = Expenses(self.instance, self.ticker, self.api_key)
         contexts = {}
         for ctx_id, ctx in self.instance.context_map.items():
             should_append = False
@@ -106,34 +103,12 @@ class FileParser:
             if should_append:
                 contexts[ctx_id] = ctx
 
-        all_concepts = {}
         for fact in self.instance.facts:
-            concept_id = fact.concept.xml_id
-            if concept_id not in all_concepts:
-                all_concepts[concept_id] = []
-            existing_vals = [f for f in all_concepts[concept_id] if f.value == fact.value]
-            if fact.context.xml_id in contexts and len(existing_vals) == 0:
-                all_concepts[concept_id].append(fact)
+            if fact.context.xml_id not in contexts:
+                continue
+            expenses.process_fact(fact)
 
-        allowed_concepts = [
-            # "us-gaap_DeconsolidationGainOrLossAmount",
-            # "pfe_AmortizationOfIntangibleAssetsNotAssociatedWithSingleFunction"
-        ]
-
-        for concept_id, facts in all_concepts.items():
-            for fact in facts:
-                if fact.context.xml_id not in contexts:
-                    continue
-                if concept_id not in root_concept_ids:
-                    continue
-                expenses.process_fact(fact)
-
-        expenses.output_all()
-
-        # for concept_id, facts in all_concepts.items():
-        #     for fact in facts:
-                # if fact.context.xml_id not in contexts:
-                #     continue
-                # if restructuring_costs.is_cost(fact):
-                    # restructuring_costs.add(fact)
-        # restructuring_costs.output()
+        if self.compare_file:
+            expenses.output_comparison(self.fd_y, self.compare_file)
+        else:
+            expenses.output_all()

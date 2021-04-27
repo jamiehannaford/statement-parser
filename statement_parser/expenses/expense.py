@@ -50,9 +50,25 @@ class Expense:
     def is_payment(self):
         return self.has_explicit_member_match("otherincome")
 
+    def contains_keywords(self, term, searches):
+        for search in searches:
+            if search in term:
+                return True 
+        return False
+
     def validate(self):
-        if self.fact.concept.balance == "credit" and self.cost > 0:
-            self.cost *= -1
-            
+        balance = self.fact.concept.balance
+
+        # if balance == "credit":
+            # self.cost = abs(self.cost) * -1
+
+        keywords = ["expense", "gainloss"]
+        # if self.contains_keywords(self.get_name().lower(), keywords) and balance == "credit" and self.cost < 0:
+            # self.cost *= -1
+
+        concept_id = self.fact.concept.xml_id
+        if concept_id == "us-gaap_InterestExpense":
+            self.cost = abs(self.cost) * -1
+        
         if self.is_payment():
             self.cost = 0

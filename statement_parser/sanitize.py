@@ -1,6 +1,59 @@
+import itertools
 from xbrl_parser.linkbase import PresentationArc
 
 exclusions = []
+
+def similar_to(a, b, allowance=0.995):
+    return a*allowance <= b <= a*(1-allowance+1)
+
+def remove_sum_map(input_map):
+    initial_sum = sum(input_map.values())
+    output_map = {}
+    for key, elem in input_map.items():
+        if initial_sum != 2*elem:
+            output_map[key] = elem
+    return output_map
+
+def remove_sum_list(input_list):
+    initial_sum = sum(input_list)
+    for elem in input_list:
+        if similar_to(2*elem, initial_sum):
+            input_list.remove(elem)
+    return input_list
+
+def dedupe_list_highest(input_list):
+    input_list.sort()
+    highest = input_list[-1]
+    input_list.pop()
+
+    output = input_list.copy()
+    for i in range(len(input_list), 0, -1):
+        for seq in itertools.combinations(input_list, i):
+            if sum(seq) == highest:
+                output = [x for x in output if x not in seq]
+
+    return output + [highest]
+
+def dedupe_list_all(input_list):
+    copied_list = input_list.copy()
+    for i in range(len(copied_list), 0, -1):
+        for seq in itertools.combinations(copied_list, i):
+            for option in [i for i in copied_list if i not in seq]:
+                if nums_within_range(sum(seq), option, 0.92):
+                    copied_list = [x for x in copied_list if x not in seq]
+    return copied_list
+
+def dedupe_list(input_list):
+    attempt1 = dedupe_list_highest(input_list)
+    if len(attempt1) != len(input_list):
+        input_list = attempt1
+    return dedupe_list_all(input_list)
+
+def nums_within_range(a, b, range_p=0.99):
+    a = abs(a)
+    b = abs(b)
+    return a*range_p <= b <= a*(1-range_p+1)
+
 
 class Element:
     def __init__(self, concept_id, cost, children = []):
@@ -45,14 +98,15 @@ class Sanitizer:
             for el in lb.extended_links:
                 for rl in el.root_locators:
                     res = self.recurse_elements(rl, self.total_costs)
-                    res.process()
+                    if res:
+                        res.process()
 
         if exclusions:
             for excl in exclusions:
                 if excl.concept_id in self.total_costs:
                     del self.total_costs[excl.concept_id]
 
-        return self.total_costs
+        return remove_sum_map(self.total_costs)
 
     def recurse_elements(self, elem, labels):
         if isinstance(elem, PresentationArc):
