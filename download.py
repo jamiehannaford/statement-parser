@@ -14,16 +14,16 @@ from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import HTTPError
 from statement_parser.utils import get_filing_urls_to_download, random_str
-from xbrl_parser import TaxonomyNotFound
-from xbrl_parser.cache import HttpCache
-from xbrl_parser.instance import parse_xbrl, parse_xbrl_url, XbrlInstance
+from xbrl import TaxonomyNotFound
+from xbrl.cache import HttpCache
+from xbrl.instance import parse_xbrl, parse_xbrl_url, XbrlInstance
 from secedgar.filings.filing import Filing
 from secedgar.filings.filing_types import FilingType
 
 import warnings
 warnings.filterwarnings('ignore')
 
-logging.getLogger("xbrl_parser.cache").setLevel(logging.WARNING)
+logging.getLogger("xbrl.cache").setLevel(logging.WARNING)
 
 class Downloader:
     root_dir = "data"
@@ -32,9 +32,9 @@ class Downloader:
         self.cache = HttpCache('./cache/')
 
         self.filing_type = filing_type
-        self.api_key = os.environ['API_KEY']
+        self.api_key = os.environ['FMP_API_KEY']
         if not self.api_key:
-            raise ValueError("API_KEY not set")
+            raise ValueError("FMP_API_KEY not set")
 
         self.set_ticker(ticker, cik)
         self.set_cik(cik, ticker)
@@ -188,7 +188,7 @@ class Downloader:
         enclosure_queue.join()
 
 if __name__ == "__main__":
-    logging.getLogger("xbrl_parser.cache").setLevel(logging.WARNING)
+    logging.getLogger("xbrl.cache").setLevel(logging.WARNING)
 
     parser = argparse.ArgumentParser(description='Download SEC filings.')
     parser.add_argument('-t', '--ticker', required=True, help='Company ticker')

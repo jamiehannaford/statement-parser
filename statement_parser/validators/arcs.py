@@ -1,5 +1,5 @@
-from xbrl_parser.linkbase import PresentationArc, CalculationArc
-from xbrl_parser.instance import NumericFact
+from xbrl.linkbase import PresentationArc, CalculationArc
+from xbrl.instance import NumericFact
 
 from operator import attrgetter
 from datetime import timedelta
@@ -115,7 +115,7 @@ class ArcValidator:
             if cost in self.decreased:
                 continue
 
-            print(fact, child_id, cost, balance)
+            # print(fact, child_id, cost, balance)
             # if fact.concept.balance == "debit":
                 # fact.value += cost
             # else:

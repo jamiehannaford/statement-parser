@@ -4,7 +4,7 @@ import math
 import re
 from operator import attrgetter
 
-from xbrl_parser.instance import TimeFrameContext, NumericFact, SimpleUnit
+from xbrl.instance import TimeFrameContext, NumericFact, SimpleUnit
 
 class ExpenseGroup:
     def __init__(self, name, tags, instance, labels=None, precedent_tags=None, strict_mode=False, 

@@ -4,7 +4,7 @@ from statement_parser.expenses.expense import Expense
 from statement_parser.expense_group import ExpenseGroup
 from statement_parser.expenses.constants import NAME_WRITE_DOWN
 
-from xbrl_parser.instance import NumericFact
+from xbrl.instance import NumericFact
 
 TAGS_ASSET_IMPAIRMENTS = [
     'inventorywritedown', # not sure about this?
@@ -87,8 +87,6 @@ class WriteDownExpenseGroup(ExpenseGroup):
         return True
 
     def is_cost(self, fact, label):
-        if "GoodwillImpairmentLoss" in fact.concept.xml_id:
-            print(super().is_cost(fact, label))
         if super().is_cost(fact, label):
             return True
 

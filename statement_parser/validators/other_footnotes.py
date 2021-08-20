@@ -25,10 +25,10 @@ class OtherFootnotesValidator:
         return facts
 
     def process(self, elements):
-        id_map = {}
+        # id_map = {}
         concept_map = {}
         for elem in elements:
-            id_map[elem.id] = elem
+            # id_map[elem.id] = elem
             concept_id = elem.concept.xml_id
             if concept_id not in concept_map:
                 concept_map[concept_id] = []
@@ -36,7 +36,7 @@ class OtherFootnotesValidator:
 
         removed = []
         for elem in elements:
-            facts = self.get_hidden_facts(elem.id)
+            facts = self.get_hidden_facts(elem)
             if len(facts) == 0:
                 continue
             
@@ -53,7 +53,8 @@ class OtherFootnotesValidator:
                         has_ctx_match = True 
                         break
 
-                if fact.id in id_map or has_ctx_match:
+                # if fact.id in id_map or has_ctx_match:
+                if has_ctx_match:
                     removed.append(fact)
 
         for removal in removed:

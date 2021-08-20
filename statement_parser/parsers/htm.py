@@ -10,23 +10,29 @@ class HTMParser:
         content = open(htm_path, "r")
         self.htm_soup = BeautifulSoup(content, "lxml")
 
-        xml_content = open(xml_path, "r")
-        self.xml_soup = BeautifulSoup(xml_content, "xml")
+        # xml_content = open(xml_path, "r")
+        # self.xml_soup = BeautifulSoup(xml_content, "xml")
 
-    def retrieve_footnotes(self, fact_id):
-        to_ids = []
-        for loc in self.xml_soup.find_all("link:footnoteArc"):
-            if fact_id == loc.get("xlink:from"):
-                to_ids.append(loc.get("xlink:to"))
+    def retrieve_footnotes(self, fact):
+        if not fact.footnote:
+            return []
 
-        footnotes = []
-        for tag in self.htm_soup.find_all("ix:footnote"):
-            if tag.get("id") not in to_ids:
-                continue
+        tag = BeautifulSoup(fact.footnote.content, "lxml")
+        return [Footnote(tag)]
 
-            footnotes.append(Footnote(tag))
+        # to_ids = []
+        # for loc in self.xml_soup.find_all("link:footnoteArc"):
+        #     if fact_id == loc.get("xlink:from"):
+        #         to_ids.append(loc.get("xlink:to"))
+
+        # footnotes = []
+        # for tag in self.htm_soup.find_all("ix:footnote"):
+        #     if tag.get("id") not in to_ids:
+        #         continue
+
+        #     footnotes.append(Footnote(tag))
             
-        return footnotes
+        # return footnotes
 
     def find_parent_with_elems(self, tag):
         if len(tag.parent.findAll()) > 1:

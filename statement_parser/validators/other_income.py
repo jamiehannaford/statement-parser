@@ -60,6 +60,8 @@ class OtherIncomeValidator:
             if self.company_defined_other.is_cost(elem, label):
                 if elem.value not in cdo_map:
                     cdo_map[elem.value] = 0
+                    
+                if elem.concept.xml_id not in cdos:
                     cdos[elem.concept.xml_id] = []
 
                 cdo_map[elem.value] += 1 

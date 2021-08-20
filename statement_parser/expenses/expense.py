@@ -1,6 +1,6 @@
 from statement_parser.text_analyser import TextAnalyser
 
-from xbrl_parser.instance import TextFact
+from xbrl.instance import TextFact
 
 BALANCE_TAGS_REVERSAL = [
     "us-gaap_CashDividendsPaidToParentCompanyByConsolidatedSubsidiaries",

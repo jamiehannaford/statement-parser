@@ -6,16 +6,16 @@ import os
 import logging
 import glob
 
-from xbrl_parser.cache import HttpCache
-from xbrl_parser.instance import parse_xbrl, TimeFrameContext, InstantContext
-from xbrl_parser.linkbase import PresentationArc, CalculationArc
+from xbrl.cache import HttpCache
+from xbrl.instance import parse_xbrl, TimeFrameContext, InstantContext
+from xbrl.linkbase import PresentationArc, CalculationArc
 
 from statement_parser.parsers.htm import HTMParser
 from statement_parser.expense_collection import Expenses
 from statement_parser.utils import same_month_year
 from statement_parser.mutual_exclusion import MutualExclusionDetector
 
-logging.getLogger("xbrl_parser.cache").setLevel(logging.WARNING)
+logging.getLogger("xbrl.cache").setLevel(logging.WARNING)
 
 
 class XMLParser:
@@ -23,7 +23,7 @@ class XMLParser:
         cache = HttpCache(cache_dir)
         self.instance = parse_xbrl(path, cache)
         self.compare_file = compare_file
-        self.api_key = os.environ["API_KEY"]
+        self.api_key = os.environ["FMP_API_KEY"]
         self.verbose = verbose
         self.to_json = to_json
 

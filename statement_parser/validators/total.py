@@ -1,5 +1,5 @@
 import math
-from xbrl_parser.instance import NumericFact
+from xbrl.instance import NumericFact
 
 class TotalValidator:
     def __init__(self, instance):

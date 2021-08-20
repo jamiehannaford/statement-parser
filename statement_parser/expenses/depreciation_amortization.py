@@ -1,7 +1,7 @@
 from statement_parser.expenses.expense import Expense
 from statement_parser.expense_group import ExpenseGroup
 from statement_parser.expenses.constants import NAME_DEPR_AMORT
-from xbrl_parser.instance import NumericFact
+from xbrl.instance import NumericFact
 
 TAGS_DEPR_AMORT = [
     "AmortizationOfIntangibleAssets".lower(), # ABT 2020

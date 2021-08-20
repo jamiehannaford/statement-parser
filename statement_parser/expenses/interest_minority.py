@@ -2,7 +2,7 @@ from statement_parser.expenses.expense import Expense
 from statement_parser.expense_group import ExpenseGroup
 from statement_parser.expenses.constants import NAME_INT_MIN
 
-from xbrl_parser.instance import TimeFrameContext
+from xbrl.instance import TimeFrameContext
 
 TAGS_INTEREST_MINORITY = [
     "NetIncomeLossAttributableToNoncontrollingInterest".lower(),

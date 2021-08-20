@@ -2,7 +2,7 @@ from statement_parser.expenses.expense import Expense
 from statement_parser.expense_group import ExpenseGroup
 from statement_parser.expenses.constants import NAME_NOO, NAME_NOUS
 
-from xbrl_parser.instance import NumericFact
+from xbrl.instance import NumericFact
 
 TAGS_NON_OP_OTHER = [
     "GainLossOnContractTermination".lower(),

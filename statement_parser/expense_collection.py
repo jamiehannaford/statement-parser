@@ -32,7 +32,7 @@ from statement_parser.validators.other_hidden import OtherHiddenValidator
 from statement_parser.labelset import LabelSet
 from statement_parser.fact import NumericFact
 
-from xbrl_parser.instance import TextFact
+from xbrl.instance import TextFact
 
 field_mapping = {
     "expensesAcquisitionMerger": NAME_COMPANY_ACQ_MERGER,

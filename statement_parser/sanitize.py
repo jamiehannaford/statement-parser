@@ -1,8 +1,8 @@
 import itertools
 import math
 
-from xbrl_parser.linkbase import PresentationArc
-from xbrl_parser.instance import NumericFact, Concept, AbstractContext
+from xbrl.linkbase import PresentationArc
+from xbrl.instance import NumericFact, Concept, AbstractContext
 
 exclusions = []
 
@@ -13,7 +13,7 @@ class GenericCost:
 
         concept = Concept(concept_id, "", "")
         context = AbstractContext("", None)
-        self.fact = NumericFact("", concept, context, value, None, 0)
+        self.fact = NumericFact(concept, context, value, None, 0)
 
 def isclose(a, b, sf=None, rel_tol=None):
     results = []

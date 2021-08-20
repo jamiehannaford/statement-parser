@@ -17,7 +17,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/x-rst",
     url="https://github.com/jamiehannaford/statement-parser",
-    packages=["statement_analyser"],
+    packages=["statement_parser"],
     zip_safe=False,
     install_requires=["requests", "bs4", "lxml"],
     python_requires=">=3.6",
