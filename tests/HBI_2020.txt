@@ -1,3 +1,0 @@
-- InventoryWriteDown 584.671
-- GoodwillAndIntangibleAssetImpairment 45.492
-TOTAL 630.163

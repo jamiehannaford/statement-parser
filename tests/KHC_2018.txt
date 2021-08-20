@@ -1,3 +1,0 @@
-- DefiniteandIndefinitelivedIntangibleAssetImpairment 8928.0
-- GoodwillImpairmentLoss 7008.0
-TOTAL 15936.0

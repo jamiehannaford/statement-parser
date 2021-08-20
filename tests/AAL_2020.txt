@@ -1,3 +1,0 @@
-- FlightEquipmentOperatingLeaseAndInventoryImpairmentLoss 1707.0
-- SeveranceCosts1 1426.0
-TOTAL 3133.0

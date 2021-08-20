@@ -1,5 +1,7 @@
 # SEC statements
 cache/
+data/
+stock-data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

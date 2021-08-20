@@ -1,0 +1,1 @@
+# Only deduct equity method investments from some companies (like GOOGL 2017)

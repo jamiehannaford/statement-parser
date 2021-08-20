@@ -4,30 +4,43 @@ import os
 import re
 import sys
 from datetime import date
+import webbrowser
+import json
 
 import pyperclip
-from statement_parser.parser import FileParser
+
+from statement_parser.parsers.xml import XMLParser
 from download import Downloader
 
 parser = argparse.ArgumentParser(description='Download SEC filings.')
-parser.add_argument('-t', '--ticker', required=True, help='Company ticker')
 parser.add_argument('-y', '--year', help='Filing year')
 parser.add_argument('-c', '--compare', default=False, action='store_true', help='Compare with reference set')
+parser.add_argument('-v', '--verbose', default=False, action='store_true', help='Verbose logging')
+parser.add_argument('-f', '--filing-type', default="10-k", help='Type of filing')
+parser.add_argument('-t', '--ticker', help='Company ticker')
+parser.add_argument('-k', '--cik', help='The CIK')
+parser.add_argument('-j', '--json', default=False, action='store_true', help='Output to JSON')
 
 args = parser.parse_args()
 
-company_dir = f"cache/www.sec.gov/Archives/edgar/data/{args.ticker}"
-filings = glob.glob(f"{company_dir}/{args.year}*/*.xml")
+if not (args.ticker or args.cik):
+    parser.error('No ticker or cik provided')
 
-if not filings:
-    d = Downloader(args.ticker)
-    d.download(
-        from_date=date(int(args.year)-1, 1, 1).strftime("%Y-%m-%d"), 
-        to_date=date(int(args.year)+1, 12, 31).strftime("%Y-%m-%d"))
-    filings = glob.glob(f"{company_dir}/{args.year}*/*.xml")
+ticker = args.ticker
+d = Downloader(args.ticker, cik=args.cik, filing_type=args.filing_type)
 
+def get_filings(ticker):
+    company_dir = f"data/{ticker}"
+    return glob.glob(f"{company_dir}/{args.year}*/*.xml")
+
+filings = get_filings(ticker)
 if not filings:
-    print(f"{company_dir} filing does not exist, please download it first")
+    d.download(from_date=f"{args.year}0101", to_date=f"{args.year}1231")
+    ticker = d.ticker
+
+filings = get_filings(ticker)
+if not filings:
+    print(f"filing does not exist, please download it first")
     sys.exit()
 
 for filing in filings:
@@ -39,8 +52,15 @@ for filing in filings:
     if args.compare:
         compare_file = f"../stock-data/{args.ticker}.json"
 
-    parser = FileParser(filing, compare_file=compare_file)
-    parser.process()
+    parser = XMLParser(filing, to_json=args.json, compare_file=compare_file, verbose=args.verbose)
+    output = parser.process()
 
-    print("XML file:", filing)
-    pyperclip.copy(filing)
+    if args.json:
+        print(json.dumps(output))
+    else:
+        print("XML file:", filing)
+        pyperclip.copy(filing)
+        print("="*50)
+        print()
+
+    break

@@ -1,3 +1,0 @@
-- RestructuringAndRelatedCostIncurredCost 196.0
-- TransformationalCostManagement 477.0
-TOTAL 673.0

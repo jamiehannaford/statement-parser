@@ -1,4 +1,0 @@
-- ImpairmentOfIntangibleAssetsExcludingGoodwill 19.9
-- RestructuringCosts 9.2
-- RestructuringCharges 185.8
-TOTAL 214.9

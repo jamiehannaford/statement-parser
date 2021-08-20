@@ -1,16 +1,50 @@
 import itertools
+import math
+
 from xbrl_parser.linkbase import PresentationArc
+from xbrl_parser.instance import NumericFact, Concept, AbstractContext
 
 exclusions = []
 
-def similar_to(a, b, allowance=0.995):
-    return a*allowance <= b <= a*(1-allowance+1)
+class GenericCost:
+    def __init__(self, concept_id, value):
+        self.cost = value
+        self.concept_id = concept_id
+
+        concept = Concept(concept_id, "", "")
+        context = AbstractContext("", None)
+        self.fact = NumericFact("", concept, context, value, None, 0)
+
+def isclose(a, b, sf=None, rel_tol=None):
+    results = []
+
+    if sf:
+        results.append(math.isclose(a, b, abs_tol=10**-int(sf)))
+    else:
+        results.append(math.isclose(a, b))
+
+    if rel_tol:
+        results.append(math.isclose(a, b, rel_tol=rel_tol))
+
+    return any(results)
 
 def remove_sum_map(input_map):
-    initial_sum = sum(input_map.values())
+    input_vals = list(input_map.values())
+    values = input_vals.copy()
+
+    initial_sum = sum(values)
+    inverse = {v: k for k, v in input_map.items()}
+    filtered = dedupe_list_all(list(input_vals))
+
+    if len(filtered) != len(input_vals):
+        for item in input_vals:
+            if item not in filtered:
+                key = inverse[item]
+                del input_map[key]
+
     output_map = {}
     for key, elem in input_map.items():
-        if initial_sum != 2*elem:
+        if not similar_to(initial_sum, 2*elem):
             output_map[key] = elem
     return output_map
 
@@ -21,37 +55,163 @@ def remove_sum_list(input_list):
             input_list.remove(elem)
     return input_list
 
-def dedupe_list_highest(input_list):
-    input_list.sort()
-    highest = input_list[-1]
-    input_list.pop()
+def dedupe_facts_highest(costs):
+    if len(costs) < 3:
+        return costs
 
-    output = input_list.copy()
-    for i in range(len(input_list), 0, -1):
-        for seq in itertools.combinations(input_list, i):
-            if sum(seq) == highest:
+    costs.sort(key=lambda c: c.value)
+    highest = costs.pop()
+
+    if isclose(highest.value, sum(c.value for c in costs), dec(highest)):
+        return costs
+
+    if len(costs) > 12:
+        return costs
+
+    output = costs.copy()
+    for i in range(len(costs), 0, -1):
+        for seq in itertools.combinations(costs, i):
+            if sum(c.value for c in seq) == highest:
                 output = [x for x in output if x not in seq]
 
-    return output + [highest]
+    output.append(highest)
 
-def dedupe_list_all(input_list):
-    copied_list = input_list.copy()
-    for i in range(len(copied_list), 0, -1):
+    return output
+
+def dedupe_costs_highest(costs):
+    if len(costs) < 3:
+        return costs
+
+    costs.sort(key=lambda c: c.cost)
+    highest = costs.pop()
+
+    if isclose(highest.cost, sum(c.cost for c in costs), dec(highest.fact)):
+        return costs
+
+    output = costs.copy()
+    for i in range(len(costs), 0, -1):
+        for seq in itertools.combinations(costs, i):
+            if sum(c.cost for c in seq) == highest:
+                output = [x for x in output if x not in seq]
+
+    output.append(highest)
+
+    return output
+
+def dec(cost):
+    if cost.decimals is None:
+        return 0
+    return cost.decimals
+
+def dedupe_facts_all(costs):
+    copied_list = costs.copy()
+    options = {}
+    removed = []
+
+    for cost in costs:
+        if cost in removed:
+            continue
+        
+        for elem in [c for c in costs if c != cost and c not in removed]:
+            if isclose(cost.value, elem.value, min(dec(cost), dec(elem))):
+                copied_list.remove(elem)
+                removed.append(elem)
+
+    if len(copied_list) > 10:
+        return copied_list
+
+    for i in range(len(copied_list), 1, -1):
         for seq in itertools.combinations(copied_list, i):
             for option in [i for i in copied_list if i not in seq]:
-                if nums_within_range(sum(seq), option, 0.92):
-                    copied_list = [x for x in copied_list if x not in seq]
+                seq_sum = sum(c.value for c in seq)
+                if isclose(seq_sum, option.value, dec(option)):
+                    diff = abs(seq_sum - option.value)
+                    options[diff] = [x for x in copied_list if x not in seq]
+
+    if options:
+        return options[min(options, key=int)]
+    
     return copied_list
 
-def dedupe_list(input_list):
-    attempt1 = dedupe_list_highest(input_list)
-    if len(attempt1) != len(input_list):
-        input_list = attempt1
-    return dedupe_list_all(input_list)
+def dedupe_costs_all(costs):
+    copied_list = costs.copy()
+    options = {}
+    removed = []
 
-def nums_within_range(a, b, range_p=0.99):
-    a = abs(a)
-    b = abs(b)
+    for cost in costs:
+        if cost in removed:
+            continue
+        
+        for elem in [c for c in costs if c != cost and c not in removed]:
+            if isclose(cost.cost, elem.cost, min(dec(cost.fact), dec(elem.fact))):
+                copied_list.remove(elem)
+                removed.append(elem)
+
+    if len(copied_list) > 10:
+        return copied_list
+
+    for i in range(len(copied_list), 1, -1):
+        for seq in itertools.combinations(copied_list, i):
+            for option in [i for i in copied_list if i not in seq]:
+                seq_sum = sum(c.cost for c in seq)
+                if isclose(seq_sum, option.cost, dec(option.fact)):
+                    diff = abs(seq_sum - option.cost)
+                    options[diff] = [x for x in copied_list if x not in seq]
+
+    if options:
+        return options[min(options, key=int)]
+    
+    return copied_list
+
+def dedupe_facts(costs):
+    cost_list = [c.value for c in costs]
+    input_sum = sum(cost_list)
+    input_len = len(costs)
+    if input_sum == 0:
+        return costs
+
+    costs = dedupe_facts_highest(costs)
+    if len(costs) != input_len:
+        return costs
+
+    costs = dedupe_facts_all(costs)
+    for elem in costs:
+        if elem.value *-1 in cost_list:
+            costs.remove(elem)
+
+    return costs
+
+def dedupe_map(input_map):
+    costs = []
+    for concept_id, value in input_map.items():
+        costs.append(GenericCost(concept_id, value))
+    
+    costs = dedupe_costs(costs)
+
+    return {c.concept_id: c.cost for c in costs}
+
+def dedupe_costs(costs):
+    cost_list = [c.cost for c in costs]
+    input_sum = sum(cost_list)
+    input_len = len(costs)
+    if input_sum == 0:
+        return costs
+
+    costs = dedupe_costs_highest(costs)
+    if len(costs) != input_len:
+        return costs
+
+    costs = dedupe_costs_all(costs)
+    for elem in costs:
+        if elem.cost *-1 in cost_list:
+            costs.remove(elem)
+
+    return costs
+
+def nums_within_range(a, b, range_p=0.99, should_abs=True):
+    if should_abs:
+        a = abs(a)
+        b = abs(b)
     return a*range_p <= b <= a*(1-range_p+1)
 
 

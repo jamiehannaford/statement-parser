@@ -1,0 +1,53 @@
+{
+   "2020": {
+      "expensesRestructuring": -4203000000.0,
+      "expensesDepreciationAndAmortization": 2802000000.0,
+      "expensesDiscontinuedOperations": 0,
+      "expensesWriteDown": 0,
+      "expensesNonRecurringOther": -305000000.0,
+      "expensesInterest": 1451000000.0,
+      "expensesInterestMinority": 31000000.0,
+      "expensesLegalRegulatoryInsurance": 0,
+      "expensesNonOperatingCompanyDefinedOther": 0,
+      "expensesAcquisitionMerger": 527000000.0,
+      "expensesDerivative": 0,
+      "expensesForeignCurrency": 0,
+      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingSubsidiaryUnconsolidated": 0,
+      "expensesOtherFinancing": 199000000.0
+   },
+   "2019": {
+      "expensesRestructuring": 0,
+      "expensesDepreciationAndAmortization": 3651000000.0,
+      "expensesDiscontinuedOperations": 0,
+      "expensesWriteDown": 0,
+      "expensesNonRecurringOther": 0,
+      "expensesInterest": 1730000000.0,
+      "expensesInterestMinority": 16000000.0,
+      "expensesLegalRegulatoryInsurance": 10000000.0,
+      "expensesNonOperatingCompanyDefinedOther": 0,
+      "expensesAcquisitionMerger": 552000000.0,
+      "expensesDerivative": 0,
+      "expensesForeignCurrency": 0,
+      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingSubsidiaryUnconsolidated": 0,
+      "expensesOtherFinancing": 2000000.0
+   },
+   "2018": {
+      "expensesRestructuring": 0,
+      "expensesDepreciationAndAmortization": 695000000.0,
+      "expensesDiscontinuedOperations": 0,
+      "expensesWriteDown": 0,
+      "expensesNonRecurringOther": 0,
+      "expensesInterest": 512000000.0,
+      "expensesInterestMinority": 9000000.0,
+      "expensesLegalRegulatoryInsurance": 0,
+      "expensesNonOperatingCompanyDefinedOther": 498000000.0,
+      "expensesAcquisitionMerger": 852000000.0,
+      "expensesDerivative": 0,
+      "expensesForeignCurrency": 0,
+      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingSubsidiaryUnconsolidated": 0,
+      "expensesOtherFinancing": 0
+   }
+}

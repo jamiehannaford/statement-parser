@@ -1,4 +1,0 @@
-- ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill 400.0
-- PaymentsForRestructuring -31.0
-- RestructuringCharges 79.0
-TOTAL 448.0

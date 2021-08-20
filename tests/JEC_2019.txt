@@ -1,6 +1,0 @@
-- IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity -557.019
-TOTAL -557.019
-
-- IncomeLossFromDiscontinuedOperationsNetOfTax -559.214
-- IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity -557.019
-TOTAL -1116.2330000000002

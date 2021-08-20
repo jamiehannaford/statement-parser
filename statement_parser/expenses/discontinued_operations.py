@@ -3,34 +3,32 @@ from statement_parser.expense_group import ExpenseGroup
 from statement_parser.expenses.constants import NAME_DISC_OPS
 
 TAGS_DISCONTINUED_OPS = [
-    "incomelossfromdiscontinuedoperationsnetoftax",
+    # "incomelossfromdiscontinuedoperationsnetoftax",
     # 'incomelossfromdiscontinuedoperationsnetoftaxattributabletoreportingentity',
 
-    "disposalgroupnotdiscontinuedoperationgainlossondisposal", # divestitures
     "gainlossondispositionofassets",
+    # "DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax".lower(),
+    # "DiscontinuedOperationIncomeLossFromDiscontinuedOperationDuringPhaseOutPeriodNetOfTax".lower(),
+
+    "GainLossOnSaleOfProperties".lower(),
+    "GainLossOnSaleOfPropertyPlantEquipment".lower(),
+    "GainOnDivestmentOfInterestsInAssociatedCompanies".lower(),
+    "DisposalGroupIncludingDiscontinuedOperationDeferredTaxLiabilities".lower(),
 ]
 
-
 class DiscontinuedOperationsExpenseGroup(ExpenseGroup):
-    def __init__(self, instance):
-        super().__init__(NAME_DISC_OPS, TAGS_DISCONTINUED_OPS, instance)
+    def __init__(self, instance, labels, profile):
+        super().__init__(NAME_DISC_OPS, TAGS_DISCONTINUED_OPS, instance, labels=labels, profile=profile)
 
-    def generate_cost(self, fact):
-        return DiscontinuedOperationsCost(fact)
+    def supports_sector(self, sector, fact):
+        return not self.is_sector_real_estate(sector)
 
-    def group_specific_processing(self):
-        dimension_map = {}
-        for cost in self.costs:
-            num = len(cost.fact.context.segments)
-            if num not in dimension_map:
-                dimension_map[num] = []
-            dimension_map[num].append(cost)
-        
-        if dimension_map:
-            return dimension_map[min(dimension_map, key=int)]
-        else:
-            return self.costs
+    def group_specific_processing(self, costs):
+        return self.filter_by_highest_term(["GainLossOn"], costs)
+
+    def generate_cost(self, fact, label, text_blocks=None):
+        return DiscontinuedOperationsCost(fact, label)
 
 class DiscontinuedOperationsCost(Expense):
-    def __init__(self, fact):
-        super().__init__(fact)
+    def __init__(self, fact, label):
+        super().__init__(fact, label)

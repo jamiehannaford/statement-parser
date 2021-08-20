@@ -1,3 +1,0 @@
-- GainLossOnDispositionOfAssets -1.122
-- DisposalGroupNotDiscontinuedOperationGainLossOnDisposal -44.375
-TOTAL -45.497

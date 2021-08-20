@@ -1,0 +1,19 @@
+{
+   "2020": {
+      "expensesRestructuring": -4789000.0,
+      "expensesDepreciationAndAmortization": 2872000.0,
+      "expensesDiscontinuedOperations": 650000.0,
+      "expensesWriteDown": 66996000.0,
+      "expensesNonRecurringOther": 0,
+      "expensesInterest": 0,
+      "expensesInterestMinority": -2133000.0,
+      "expensesLegalRegulatoryInsurance": 0,
+      "expensesNonOperatingCompanyDefinedOther": -12031000.0,
+      "expensesAcquisitionMerger": 3146000.0,
+      "expensesDerivative": -129254000.0,
+      "expensesForeignCurrency": 0,
+      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingSubsidiaryUnconsolidated": 0,
+      "expensesOtherFinancing": -18601000.0
+   }
+}

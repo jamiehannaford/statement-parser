@@ -1,8 +1,0 @@
-- GoodwillImpairmentLoss 3183.0
-- IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity -187.0
-- IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity -196.0
-- IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity -793.0
-TOTAL 2007.0
-
-- GoodwillImpairmentLoss 3183.0
-TOTAL 3183.0

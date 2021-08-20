@@ -29,7 +29,8 @@ FilingMetadata = namedtuple(
         "filing_details_htm",
         "submission_base_url",
         "period_ending",
-        "cik"
+        "cik",
+        "zip_url",
     ],
 )
 
@@ -71,6 +72,7 @@ def build_filing_metadata_from_hit(hit: dict) -> FilingMetadata:
     return FilingMetadata(
         accession_number=accession_number,
         full_submission_url=full_submission_url,
+        zip_url=full_submission_url.replace(".txt", "-xbrl.zip"),
         filing_details_url=filing_details_url,
         filing_details_filename=filing_details_filename,
         filing_details_xml=filing_details_url.replace("10k_", "").replace(".htm", ".xml"),
@@ -79,6 +81,10 @@ def build_filing_metadata_from_hit(hit: dict) -> FilingMetadata:
         submission_base_url=submission_base_url,
         cik=cik,
     )
+
+class EdgarSearchApiError(Exception):
+    """Error raised when Edgar Search API encounters a problem."""
+
 
 def form_request_payload(
     ticker_or_cik: str,
