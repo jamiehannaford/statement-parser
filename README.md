@@ -20,6 +20,7 @@ You must first generate a free API key with [financialmodelingprep.com](https://
 $ export FMP_API_KEY="$KEY"
 $ git clone https://github.com/jamiehannaford/statement-parser
 $ cd statement-parser
+$ python setup.py install
 ```
 
 ## Viewing expenses
