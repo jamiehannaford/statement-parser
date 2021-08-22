@@ -103,22 +103,11 @@ class Expenses:
                                 self.labels[rl.concept_id] = LabelSet()
 
                             self.labels[rl.concept_id].add(l)
-    
-    def get_yahoo_profile(self):
-        try:
-            url = f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{self.ticker}?modules=summaryProfile"
-            res = requests.get(url).json()
-            return res["quoteSummary"]["result"][0]["summaryProfile"]
-        except KeyError:
-            return None
 
     def get_profile(self):
-        try:
-            url = f"https://financialmodelingprep.com/api/v4/company-outlook?symbol={self.ticker}&apikey={self.api_key}"
-            res = requests.get(url).json()
-            return res["profile"]
-        except KeyError:
-            return self.get_yahoo_profile()
+        url = f"https://financialmodelingprep.com/api/v3/profile/{self.ticker}?apikey={self.api_key}"
+        res = requests.get(url).json()
+        return res[0]
 
     def inspect_fact(self, validator, name):
         print(validator.__class__.__name__)

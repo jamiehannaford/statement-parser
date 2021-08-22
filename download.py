@@ -61,7 +61,7 @@ class Downloader:
         if not cik:
             try:
                 cik = self.get_cik_sic(ticker)
-            except IndexError:
+            except (KeyError, IndexError):
                 cik = self.get_cik_prof(ticker)
 
         self.cik = cik.zfill(10)
