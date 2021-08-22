@@ -57,6 +57,26 @@ $ python ./parse.py -t GOOGL -y 2020 --json
 }
 ```
 
+## Download filing and XBRL data
+
+To download the last 10 filings of a company:
+
+```bash
+python ./download.py -t MSFT --last 10
+```
+
+You can also specify a date range with `--from` and `--to`. 
+
+## Opening a filing on the SEC's website
+
+To open a filing and view with iXBRL:
+
+```bash
+python ./open.py -t GOOGL -y 2020
+```
+
+Note: The year is when the statement was filed, not necessarily the filing period.
+
 ## Testing the data
 
 This tool's output was tested against [IEX Cloud's Fundamentals data](https://iexcloud.io/docs/api/#fundamentals), which includes expenses that appear in the IS, BS or CF sections of a 10-K. Because this API does not include expenses hidden in footnotes and annotations, it will diverge at times from this tool's output. Where possible I've tried to manually verify the results, but could use a second pair of eyes if anybody would like to help verify.
