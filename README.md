@@ -1,12 +1,12 @@
 # SEC statement parser
 
-This tool allows you to extract all of the non-operating, hidden and non-recurrings costs in a 10-K filing to get a picture of company's true [Core Earnings]([Core Earnings](https://www.investopedia.com/terms/c/coreearnings.asp). 
+This tool allows you to extract all of the non-operating, hidden and non-recurrings costs in a 10-K filing to get a true picture of company's [Core Earnings](https://www.investopedia.com/terms/c/coreearnings.asp). 
 
-Very often companies will hide these expenses into operating line items and footnotes, which ends up distorting key metrics like net income. This tool searches through all areas of a 10-K filing, including the footnotes, and removes these costs. To do this, the program will download the filing directly from the SEC, parse its XBRL instance and schema files, and then output a categorised list of expenses that should be excluded from Core Earnings.
+Very often companies will hide these expenses in operating line items and footnotes, which ends up distorting key metrics like Net Income. This tool searches through all areas of a 10-K filing, including the footnotes, and removes these costs. To do this, the program will download the filing directly from the SEC, parse its XBRL instance and schema files, and then output a categorised list of expenses that should be excluded from Core Earnings.
 
 ## Why?
 
-There are two main reasons why Core Earnings are important.
+There are two main reasons why analysing Core Earnings is important.
 
 - *Value investing*. Core Earnings allow investors to ascertain the profitability of the underlying business, which is one of the key factors when deciding to invest in a given security.
 
@@ -69,7 +69,7 @@ You can also specify a date range with `--from` and `--to`.
 
 ## Opening a filing on the SEC's website
 
-To open a filing and view with iXBRL:
+To cross-reference this tool's results, you can view it on the SEC's website with iXBRL:
 
 ```bash
 python ./open.py -t GOOGL -y 2020
