@@ -41,9 +41,10 @@ class InterestExpenseGroup(ExpenseGroup):
 
     def supports_sector(self, sector, fact):
         if self.is_sector_financial(sector):
-            if any(w in fact.concept.xml_id.lower() for w in FINANCE_INTEREST):
-                return True 
             return False
+            # if any(w in fact.concept.xml_id.lower() for w in FINANCE_INTEREST):
+            #     return True 
+            # return False
 
         return True
 

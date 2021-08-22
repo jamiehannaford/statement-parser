@@ -4,6 +4,7 @@ from statement_parser.expenses.constants import NAME_CURRENCY
 
 TAGS_CURRENCY = [
     "ForeignCurrencyTransactionGainLossBeforeTax".lower(),
+    "ForeignCurrencyTransactionGainLossUnrealized".lower(),
 ]
 
 class CurrencyGroup(ExpenseGroup):

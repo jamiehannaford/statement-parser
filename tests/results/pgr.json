@@ -12,7 +12,7 @@
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
-      "expensesNonOperatingOther": -750100000.0,
+      "expensesNonOperatingOther": 0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
       "expensesOtherFinancing": 0
    },
@@ -29,7 +29,7 @@
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
-      "expensesNonOperatingOther": -826600000.0,
+      "expensesNonOperatingOther": 0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
       "expensesOtherFinancing": 0
    },
@@ -46,7 +46,7 @@
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
-      "expensesNonOperatingOther": 232400000.0,
+      "expensesNonOperatingOther": 0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
       "expensesOtherFinancing": 0
    },
@@ -63,7 +63,7 @@
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
-      "expensesNonOperatingOther": -175900000.0,
+      "expensesNonOperatingOther": 0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
       "expensesOtherFinancing": 0
    },
@@ -80,7 +80,7 @@
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
-      "expensesNonOperatingOther": -193900000.0,
+      "expensesNonOperatingOther": 0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
       "expensesOtherFinancing": 0
    }

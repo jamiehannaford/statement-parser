@@ -47,7 +47,7 @@ class DepreciationAmortizationExpenseGroup(ExpenseGroup):
             return False
 
         concept_id = fact.concept.xml_id.lower()
-        terms = ["DepreciationAmortization", "VehicleDepreciation", "RelatedDepreciationAndAmortization"]
+        terms = ["DepreciationAmortization", "Amortizationofintangible", "VehicleDepreciation", "RelatedDepreciationAndAmortization"]
         if any(w.lower() in concept_id for w in terms):
             return True
 

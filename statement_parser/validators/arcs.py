@@ -86,6 +86,8 @@ class ArcValidator:
             for cost in costs:
                 if not highest or abs(cost.value) > abs(highest.value):
                     highest = cost
+            if highest is None:
+                return []
             return [highest]
         else:
             return []

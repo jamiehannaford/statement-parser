@@ -43,6 +43,7 @@ TAGS_RESTRUCTURING = [
     "RestructuringImpairmentPlantClosingAndTransitionCosts".lower(),
     "ImpairmentIntegrationAndRestructuringExpenses".lower(),
     "RestructuringTransactionAndIntegrationCost".lower(),
+    "RestructuringChargesCostOfProductsSold".lower(),
 ]
 
 PREC_RESTR_TAG = [
@@ -90,12 +91,11 @@ class RestructuringExpenseGroup(ExpenseGroup):
         
         if not isinstance(fact, NumericFact):
             return False
-        
+
         concept_id = fact.concept.xml_id.lower()
         excluded_terms = ["incurredcost", "incomeloss", "paymentsfor", "netoftax", "assetimpairment"]   
         if any(w in concept_id for w in excluded_terms):
             return False
-
         if self.matches_custom_pattern(fact):
             return True
 
@@ -104,7 +104,7 @@ class RestructuringExpenseGroup(ExpenseGroup):
 
         if "GainLossOnSaleOfInvestment".lower() in concept_id:
             return True
-
+            
         main_terms = ["restructuring", "deconsolidation", "realignment", "employeetermination"]
         other_terms = ["charges?", "costs?", "expenses?"]
         regex_patt = "(" + "|".join(main_terms) + ')(.*)(' + "|".join(other_terms) + ")$"

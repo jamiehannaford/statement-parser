@@ -1,7 +1,7 @@
 {
    "2020": {
       "expensesRestructuring": 15594000.0,
-      "expensesDepreciationAndAmortization": 1500000.0,
+      "expensesDepreciationAndAmortization": 49641000.0,
       "expensesDiscontinuedOperations": -252000.0,
       "expensesWriteDown": 1800000.0,
       "expensesNonRecurringOther": 0,
@@ -18,9 +18,9 @@
    },
    "2019": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 2900000.0,
+      "expensesDepreciationAndAmortization": 55015000.0,
       "expensesDiscontinuedOperations": 0,
-      "expensesWriteDown": 18200000.0,
+      "expensesWriteDown": 600000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 20107000.0,
       "expensesInterestMinority": 0,
@@ -35,7 +35,7 @@
    },
    "2018": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 2300000.0,
+      "expensesDepreciationAndAmortization": 53244000.0,
       "expensesDiscontinuedOperations": 63000.0,
       "expensesWriteDown": 0,
       "expensesNonRecurringOther": 11800000.0,
@@ -52,7 +52,7 @@
    },
    "2017": {
       "expensesRestructuring": 31192000.0,
-      "expensesDepreciationAndAmortization": 1600000.0,
+      "expensesDepreciationAndAmortization": 48518000.0,
       "expensesDiscontinuedOperations": 2552000.0,
       "expensesWriteDown": 94324000.0,
       "expensesNonRecurringOther": 0,
@@ -68,8 +68,8 @@
       "expensesOtherFinancing": 0
    },
    "2016": {
-      "expensesRestructuring": -9173000.0,
-      "expensesDepreciationAndAmortization": 1300000.0,
+      "expensesRestructuring": -9385000.0,
+      "expensesDepreciationAndAmortization": 47019000.0,
       "expensesDiscontinuedOperations": 9755000.0,
       "expensesWriteDown": 90724000.0,
       "expensesNonRecurringOther": 0,

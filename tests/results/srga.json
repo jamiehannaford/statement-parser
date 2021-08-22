@@ -1,0 +1,36 @@
+{
+   "2020": {
+      "expensesRestructuring": -209766000.0,
+      "expensesDepreciationAndAmortization": 6581000.0,
+      "expensesDiscontinuedOperations": 0,
+      "expensesWriteDown": 32464000.0,
+      "expensesNonRecurringOther": 0,
+      "expensesInterest": -92000.0,
+      "expensesInterestMinority": 0,
+      "expensesLegalRegulatoryInsurance": 0,
+      "expensesNonOperatingCompanyDefinedOther": -31000.0,
+      "expensesAcquisitionMerger": 118597000.0,
+      "expensesDerivative": 12641000.0,
+      "expensesForeignCurrency": -279000.0,
+      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingSubsidiaryUnconsolidated": 0,
+      "expensesOtherFinancing": 2686000.0
+   },
+   "2019": {
+      "expensesRestructuring": 626000.0,
+      "expensesDepreciationAndAmortization": 22675000.0,
+      "expensesDiscontinuedOperations": 0,
+      "expensesWriteDown": 257492000.0,
+      "expensesNonRecurringOther": 0,
+      "expensesInterest": 0,
+      "expensesInterestMinority": 0,
+      "expensesLegalRegulatoryInsurance": 0,
+      "expensesNonOperatingCompanyDefinedOther": -12549000.0,
+      "expensesAcquisitionMerger": 17159000.0,
+      "expensesDerivative": 0,
+      "expensesForeignCurrency": 0,
+      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingSubsidiaryUnconsolidated": 0,
+      "expensesOtherFinancing": 0
+   }
+}

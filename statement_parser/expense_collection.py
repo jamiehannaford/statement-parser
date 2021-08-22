@@ -56,7 +56,11 @@ class Expenses:
     def __init__(self, instance, ticker, api_key, file_parser, verbose=False):
         self.ticker = ticker
         self.api_key = api_key
-        self.profile = self.get_profile()
+        if self.api_key:
+            self.profile = self.get_profile()
+        else: 
+            self.profile = None 
+
         self.verbose = verbose
         self.instance = instance
         self.populate_labels()
@@ -138,7 +142,7 @@ class Expenses:
 
         for validator in validation_chain:
             self.facts = validator.process(self.facts)
-            # self.inspect_fact(validator, "GoodwillImpairmentLoss")
+            # self.inspect_fact(validator, "SeveranceCosts1")
 
         cat_map = {}
         for category in self.categories:

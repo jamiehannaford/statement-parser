@@ -55,6 +55,9 @@ class ExpenseGroup:
     def is_sector_real_estate(self, sector):
         return sector == "Real Estate"
 
+    def is_sector_insurance(self, sector):
+        return "Insurance" in sector
+
     def get_sector(self):
         if not self.profile:
             return None

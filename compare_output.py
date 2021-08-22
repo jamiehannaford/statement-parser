@@ -2,6 +2,7 @@ import argparse
 import glob
 import json
 import os
+import random
 
 import pandas as pd
 from tabulate import tabulate
@@ -28,7 +29,21 @@ def emoji(a, b):
     else:
         return u"\u274C"
 
-def run_all(ticker, save):
+def run_random(count, save):
+    lst = []
+    for res_file in glob.glob(f"tests/results/*.json"):
+        ticker = os.path.basename(res_file.replace(".json", ""))
+        with open(res_file) as f:
+            data = json.load(f)
+            for y in data:
+                lst.append(f"{ticker.lower()}_{y}")
+    
+    for choice in random.choices(lst, k=int(count)):
+        parts = choice.split("_")
+        print(f"running {choice}")
+        run_test(parts[0], parts[1], save)
+
+def run_test(ticker, year, save):
     search_query = "stock-data/*.json"
     if ticker:
         search_query = f"stock-data/{ticker.lower()}.json"
@@ -51,14 +66,16 @@ def run_all(ticker, save):
             data = json.load(json_file)
             
             for filing in data:
-                year = filing['periodEndDate'].split("-")[0]
+                end_year = filing['periodEndDate'].split("-")[0]
+                if year and end_year != year:
+                    continue
 
-                filing_path = find_filing(ticker, year)
+                filing_path = find_filing(ticker, end_year)
                 if not filing_path:
                     continue
 
                 print("="*50)
-                print(f"{ticker.upper()} {year} - {filing_path}")
+                print(f"{ticker.upper()} {end_year} - {filing_path}")
                 print()
 
                 result = process_filing(filing_path)
@@ -67,7 +84,7 @@ def run_all(ticker, save):
                     continue
 
                 if save:
-                    ticker_results[year] = result
+                    ticker_results[end_year] = result
 
                 correct = 0
 
@@ -92,7 +109,7 @@ def run_all(ticker, save):
                     acts.append(format_int(val))
 
                     if compare_cache:
-                        cache_res = ticker_results[year][key]
+                        cache_res = ticker_results[end_year][key]
                         total_cached += cache_res
                         cached.append(f"{emoji(cache_res, val)} {format_int(cache_res)}")
 
@@ -114,7 +131,7 @@ def run_all(ticker, save):
                 exps.append(f"{emoji(total_exp_non_dep, total_act_non_dep)} {format_int(total_exp_non_dep)}")
 
                 if total_cached:
-                    total_act_non_cached = total_cached-ticker_results[year]['expensesDepreciationAndAmortization']
+                    total_act_non_cached = total_cached-ticker_results[end_year]['expensesDepreciationAndAmortization']
                     cached.append(f"{emoji(total_act_non_cached, total_act_non_dep)} {format_int(total_act_non_cached)}")
 
                 if compare_cache:
@@ -134,6 +151,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download SEC filings.')
     parser.add_argument('-t', '--ticker', help='Company ticker')
     parser.add_argument('-s', '--save', default=False, action='store_true', help='Save results for later tests')
+    
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-a', '--all', action='store_true', help="Run all tests")
+    group.add_argument('-n', '--num', help="Run n random tests")
+    
     args = parser.parse_args()
 
-    run_all(args.ticker, args.save)
+    if args.all:
+        run_test(args.ticker, "", args.save)
+    else:
+        run_random(args.num, args.save)

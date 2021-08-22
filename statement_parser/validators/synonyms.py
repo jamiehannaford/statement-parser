@@ -53,7 +53,7 @@ class SynonymValidator:
                 "us-gaap_AmortizationOfIntangibleAssets",
             ],
             "us-gaap_RestructuringCharges": [
-                "us-gaap_SeveranceCosts1", # CAT 2017
+                "us-gaap_SeveranceCosts1",
             ],
             "us-gaap_GainLossOnSaleOfBusiness": [
                 "us-gaap_DisposalGroupNotDiscontinuedOperationGainLossOnDisposal",
@@ -90,10 +90,6 @@ class SynonymValidator:
             ],
             "us-gaap_BusinessCombinationStepAcquisitionEquityInterestInAcquireeRemeasurementGainOrLoss": [
                 "us-gaap_GainLossOnSaleOfInvestments"
-            ],
-            "us-gaap_RestructuringCharges": [
-                "us-gaap_RestructuringSettlementAndImpairmentProvisions",
-                "us-gaap_SeveranceCosts1",
             ],
             "us-gaap_GainLossOnDispositionOfAssets1": [
                 "us-gaap_GainLossOnSaleOfPropertyPlantEquipment",

@@ -25,6 +25,7 @@ class InterestMinorityExpenseGroup(ExpenseGroup):
             "us-gaap_ProfitLoss",
             "us-gaap_IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest",
         ]
+
         if fact.concept.xml_id in parent_tags:
             for segment in fact.context.segments:
                 if "NoncontrollingInterestMember" in segment.member.name:
@@ -32,6 +33,28 @@ class InterestMinorityExpenseGroup(ExpenseGroup):
             return False
         
         return super().is_cost(fact, label)
+
+    def group_specific_processing(self, costs):
+        comprehensive = False
+        profit_loss = 0
+
+        for cost in self.costs:
+            print(cost.fact)
+            if "ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest" in cost.fact.concept.xml_id:
+                comprehensive = True
+            if "ProfitLoss" in cost.fact.concept.xml_id:
+                profit_loss = cost.cost
+        
+        costs = []
+        for cost in self.costs:
+            id = cost.fact.concept.xml_id
+            if comprehensive and "IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest" in id:
+                continue
+            # if "ProfitLoss" != id and abs(cost.cost) == abs(profit_loss):
+                # continue
+            costs.append(cost)
+        
+        return costs
 
     def generate_cost(self, fact, label, text_blocks=None):
         return InterestMinorityCost(fact, label)
@@ -42,3 +65,6 @@ class InterestMinorityCost(Expense):
 
     def validate(self, text_facts=[]):
         super().validate(text_facts=text_facts)
+
+        if "ComprehensiveIncome" in self.fact.concept.xml_id:
+            self.cost *= -1

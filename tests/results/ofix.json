@@ -1,7 +1,7 @@
 {
    "2020": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 11200000.0,
+      "expensesDepreciationAndAmortization": 30546000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 0,
       "expensesNonRecurringOther": 0,
@@ -18,7 +18,7 @@
    },
    "2019": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 7000000.0,
+      "expensesDepreciationAndAmortization": 24699000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 0,
       "expensesNonRecurringOther": 0,
@@ -35,9 +35,9 @@
    },
    "2017": {
       "expensesRestructuring": 3300000.0,
-      "expensesDepreciationAndAmortization": 1800000.0,
+      "expensesDepreciationAndAmortization": 20124000.0,
       "expensesDiscontinuedOperations": 0,
-      "expensesWriteDown": 0,
+      "expensesWriteDown": 5600000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 416000.0,
       "expensesInterestMinority": 0,
@@ -51,10 +51,10 @@
       "expensesOtherFinancing": 0
    },
    "2016": {
-      "expensesRestructuring": 5000000.0,
-      "expensesDepreciationAndAmortization": 1800000.0,
+      "expensesRestructuring": 3000000.0,
+      "expensesDepreciationAndAmortization": 20841000.0,
       "expensesDiscontinuedOperations": 0,
-      "expensesWriteDown": 0,
+      "expensesWriteDown": 2727000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": -763000.0,
       "expensesInterestMinority": 0,
@@ -69,7 +69,7 @@
    },
    "2015": {
       "expensesRestructuring": -3099000.0,
-      "expensesDepreciationAndAmortization": 1700000.0,
+      "expensesDepreciationAndAmortization": 20923000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 0,
       "expensesNonRecurringOther": 0,
@@ -86,7 +86,7 @@
    },
    "2014": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 2284000.0,
+      "expensesDepreciationAndAmortization": 22878000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 966000.0,
       "expensesNonRecurringOther": 0,
@@ -103,14 +103,14 @@
    },
    "2013": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 2687000.0,
+      "expensesDepreciationAndAmortization": 22659000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 19200000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 1925000.0,
       "expensesInterestMinority": 0,
       "expensesLegalRegulatoryInsurance": 0,
-      "expensesNonOperatingCompanyDefinedOther": -4907000.0,
+      "expensesNonOperatingCompanyDefinedOther": -2220000.0,
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
@@ -120,7 +120,7 @@
    },
    "2012": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 2098000.0,
+      "expensesDepreciationAndAmortization": 20261000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 351000.0,
       "expensesNonRecurringOther": 0,
@@ -137,11 +137,11 @@
    },
    "2011": {
       "expensesRestructuring": 0,
-      "expensesDepreciationAndAmortization": 5595000.0,
+      "expensesDepreciationAndAmortization": 22776000.0,
       "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 5463000.0,
       "expensesNonRecurringOther": 0,
-      "expensesInterest": 9789000.0,
+      "expensesInterest": 9463000.0,
       "expensesInterestMinority": 0,
       "expensesLegalRegulatoryInsurance": 61463000.0,
       "expensesNonOperatingCompanyDefinedOther": 2353000.0,
@@ -150,6 +150,6 @@
       "expensesForeignCurrency": 1600000.0,
       "expensesNonOperatingOther": 0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
-      "expensesOtherFinancing": -326000.0
+      "expensesOtherFinancing": 0
    }
 }

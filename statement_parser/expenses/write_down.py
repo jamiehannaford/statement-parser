@@ -33,6 +33,8 @@ TAGS_ASSET_IMPAIRMENTS = [
     "AssetImpairmentAndAbandonmentCharges".lower(),
 
     'EquityMethodInvestmentOtherThanTemporaryImpairment'.lower(), # disabling for now
+    "ResearchAndDevelopmentAssetAcquiredOtherThanThroughBusinessCombinationWrittenOff".lower(),
+    "ImpairmentOfRealEstate".lower(),
 ]
 
 # TODO Find a way to eliminate this

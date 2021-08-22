@@ -1,9 +1,9 @@
 {
    "2020": {
-      "expensesRestructuring": 0,
+      "expensesRestructuring": 28000000.0,
       "expensesDepreciationAndAmortization": 1290000000.0,
       "expensesDiscontinuedOperations": 0,
-      "expensesWriteDown": 0,
+      "expensesWriteDown": 128000000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 591000000.0,
       "expensesInterestMinority": 0,
@@ -34,10 +34,10 @@
       "expensesOtherFinancing": 0
    },
    "2018": {
-      "expensesRestructuring": 117000000.0,
+      "expensesRestructuring": 21000000.0,
       "expensesDepreciationAndAmortization": 1161000000.0,
       "expensesDiscontinuedOperations": 0,
-      "expensesWriteDown": 0,
+      "expensesWriteDown": 110000000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 668000000.0,
       "expensesInterestMinority": 0,
@@ -54,7 +54,7 @@
       "expensesRestructuring": -73000000.0,
       "expensesDepreciationAndAmortization": 1195000000.0,
       "expensesDiscontinuedOperations": -198000000.0,
-      "expensesWriteDown": 0,
+      "expensesWriteDown": 64000000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 651000000.0,
       "expensesInterestMinority": 0,
@@ -68,9 +68,9 @@
       "expensesOtherFinancing": 0
    },
    "2016": {
-      "expensesRestructuring": 80000000.0,
+      "expensesRestructuring": -1162000000.0,
       "expensesDepreciationAndAmortization": 1167000000.0,
-      "expensesDiscontinuedOperations": -1549000000.0,
+      "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": -185000000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 663000000.0,
@@ -121,7 +121,7 @@
    "2013": {
       "expensesRestructuring": 0,
       "expensesDepreciationAndAmortization": 990000000.0,
-      "expensesDiscontinuedOperations": -31000000.0,
+      "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 195000000.0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 350000000.0,
@@ -155,7 +155,7 @@
    "2011": {
       "expensesRestructuring": 0,
       "expensesDepreciationAndAmortization": 1008000000.0,
-      "expensesDiscontinuedOperations": 12000000.0,
+      "expensesDiscontinuedOperations": 0,
       "expensesWriteDown": 0,
       "expensesNonRecurringOther": 0,
       "expensesInterest": 354000000.0,

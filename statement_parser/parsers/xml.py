@@ -13,7 +13,6 @@ from xbrl.linkbase import PresentationArc, CalculationArc
 from statement_parser.parsers.htm import HTMParser
 from statement_parser.expense_collection import Expenses
 from statement_parser.utils import same_month_year
-from statement_parser.mutual_exclusion import MutualExclusionDetector
 
 logging.getLogger("xbrl.cache").setLevel(logging.WARNING)
 
@@ -57,19 +56,13 @@ class XMLParser:
         grace_period = timedelta(40)
         ends_before_filing = ctx.end_date <= (self.filing_date_end + grace_period)
         starts_after_filing = ctx.start_date >= (self.filing_date_start - grace_period)
-
         return starts_after_filing and ends_before_filing
-
-    def within_range(self, ctx):
-        ends_before_filing = ctx.instant_date <= self.filing_date_end
-        starts_after_filing = ctx.instant_date >= self.filing_date_end - relativedelta(months=11)
-        return starts_after_filing and ends_before_filing 
 
     def is_a_forecast(self, ctx):
         for segment in ctx.segments:
             if segment.dimension.name == "StatementScenarioAxis" and "Forecast" in segment.member.name:
                 return True 
-        return False 
+        return False
 
     def process(self):
         expenses = Expenses(self.instance, self.ticker, self.api_key, self.htm_parser, verbose=self.verbose)
@@ -77,7 +70,8 @@ class XMLParser:
         dimension_map = {}
         segment_maps = {}
 
-        contexts = {}
+        contexts = instant_contexts = {}
+
         for ctx_id, ctx in self.instance.context_map.items():
             should_append = False
             

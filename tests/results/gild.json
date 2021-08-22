@@ -9,7 +9,7 @@
       "expensesInterestMinority": -34000000.0,
       "expensesLegalRegulatoryInsurance": 0,
       "expensesNonOperatingCompanyDefinedOther": 1418000000.0,
-      "expensesAcquisitionMerger": 55000000.0,
+      "expensesAcquisitionMerger": 631000000.0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
       "expensesNonOperatingOther": 0,
@@ -46,7 +46,7 @@
       "expensesAcquisitionMerger": 0,
       "expensesDerivative": 0,
       "expensesForeignCurrency": 0,
-      "expensesNonOperatingOther": 0,
+      "expensesNonOperatingOther": -278000000.0,
       "expensesNonOperatingSubsidiaryUnconsolidated": 0,
       "expensesOtherFinancing": 0
    },

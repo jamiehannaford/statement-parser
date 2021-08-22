@@ -6,7 +6,7 @@ TAGS_COMPANY_OTHER = [
     "investmentincomedividend",
     "OtherNonoperatingIncomeExpense".lower(), # AAPL 2020 lists this
     "NonoperatingIncomeExpense".lower(), # AAPL 2012 only has net
-    "OtherOperatingIncomeExpenseNet".lower(), # QCOM 2019
+    # "OtherOperatingIncomeExpenseNet".lower(), # QCOM 2019
     "OtherExpenseExcludingInterest".lower(), # AIG 2018
     "OtherIncome".lower(),
     "OtherExpenses".lower(),
@@ -14,6 +14,7 @@ TAGS_COMPANY_OTHER = [
     "Othermiscellaneousexpenseincome".lower(),
     "OtherIncomeExpensesOther".lower(),
     "OtherNonoperatingIncomeExpenseNet".lower(),
+    "DeferredTaxAssetsNet".lower(),
 ]
 
 PREC_CDO = [
@@ -30,6 +31,9 @@ class CompanyDefinedOtherGroup(ExpenseGroup):
         super().__init__(NAME_COMPANY_OTHER, TAGS_COMPANY_OTHER, instance,
             precedent_tags=PREC_CDO, labels=labels, profile=profile, text_blocks=CDO_TEXT_BLOCKS)
 
+    def group_specific_processing(self, costs):
+        return self.filter_by_highest_term(["OtherNonoperating"], costs, allow_protected=False)
+        
     # def is_cost(self, fact, label):
     #     if super().is_cost(fact, label):
     #         return True 
