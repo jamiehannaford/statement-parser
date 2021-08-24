@@ -35,7 +35,7 @@ def get_filings(ticker):
 
 filings = get_filings(ticker)
 if not filings:
-    d.download(from_date=f"{args.year}0101", to_date=f"{args.year}1231")
+    d.download(from_date=f"{args.year}-01-01", to_date=f"{args.year}-12-31")
     ticker = d.ticker
 
 filings = get_filings(ticker)
