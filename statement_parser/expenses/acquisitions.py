@@ -38,7 +38,7 @@ class AcquisitionsMergerGroup(ExpenseGroup):
         main_terms = ["acquisition", "transaction", "merger", "businesscombination"]
         other_terms = ["charges?", "costs?", "expenses?", "fees?"]
         regex_patt = "(" + "|".join(main_terms) + ')(.*)(' + "|".join(other_terms) + ")$"
-        res = re.search(regex_patt, concept_id)
+        res = re.search(regex_patt, fact.concept.xml_id.lower())
         return res is not None
 
     def generate_cost(self, fact, label, text_blocks=None):

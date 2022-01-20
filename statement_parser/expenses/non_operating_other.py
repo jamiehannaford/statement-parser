@@ -58,7 +58,7 @@ class NonOperatingOtherExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
         
-        return self.contains_match(terms)
+        return self.contains_match(["FeeTemporary"])
 
 class NonOperatingOtherCost(Expense):
     def __init__(self, fact, label, text_blocks):

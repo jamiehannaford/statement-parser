@@ -25,10 +25,10 @@ class ExpenseGroup:
         self.profile = profile
 
     def contains_excluded(self, excluded_terms):
-        return any(w.lower() in self.id.lower() for w in excluded_terms)
+        return any(w.lower() in self.name.lower() for w in excluded_terms)
 
     def contains_match(self, terms):
-        return any(w.lower() in self.id.lower() for w in terms):
+        return any(w.lower() in self.name.lower() for w in terms)
 
     def load_root_concepts(self):
         root_concept_ids = []

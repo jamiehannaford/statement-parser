@@ -61,7 +61,8 @@ class InterestExpenseGroup(ExpenseGroup):
         excluded_terms = ["tax", "Merger", "DisposalGroup"]
         if self.contains_excluded(excluded_terms):
             return False
-            
+        
+        concept_id = fact.concept.xml_id.lower()
         if "InterestExpense".lower() in concept_id and "OfFinancial".lower() not in concept_id:
             return True
 

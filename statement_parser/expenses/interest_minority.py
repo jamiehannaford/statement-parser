@@ -39,14 +39,14 @@ class InterestMinorityExpenseGroup(ExpenseGroup):
         profit_loss = 0
 
         for cost in self.costs:
-            if cost.id_contains("ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest"):
+            if cost.contains_id("ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest"):
                 comprehensive = True
-            if cost.id_contains("ProfitLoss"):
+            if cost.contains_id("ProfitLoss"):
                 profit_loss = cost.cost
         
         costs = []
         for cost in self.costs:
-            if comprehensive and cost.id_contains("IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest"):
+            if comprehensive and cost.contains_id("IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest"):
                 continue
             costs.append(cost)
         
