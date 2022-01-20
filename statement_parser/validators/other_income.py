@@ -45,7 +45,7 @@ class OtherIncomeValidator:
         cdo_map = {}
         cdos = {}
         for elem in elements:
-            label = self.labels[elem.fact.concept.xml_id]
+            label = self.labels[elem.id]
 
             if elem.value not in value_map:
                 value_map[elem.value] = 0
@@ -61,15 +61,15 @@ class OtherIncomeValidator:
                 if elem.value not in cdo_map:
                     cdo_map[elem.value] = 0
                     
-                if elem.concept.xml_id not in cdos:
-                    cdos[elem.concept.xml_id] = []
+                if elem.id not in cdos:
+                    cdos[elem.id] = []
 
                 cdo_map[elem.value] += 1 
-                cdos[elem.concept.xml_id].append(elem)
+                cdos[elem.id].append(elem)
         
         output = []
         for elem in elements:
-            label = self.labels[elem.fact.concept.xml_id]
+            label = self.labels[elem.id]
             
             should_append = True
             if self.company_defined_other.is_cost(elem, label):

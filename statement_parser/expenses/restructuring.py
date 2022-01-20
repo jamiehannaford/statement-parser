@@ -11,32 +11,25 @@ TAGS_RESTRUCTURING = [
     'restructuringandotheractionrelatedcharges',
     "restructuringcosts",
     'OtherRestructuringCosts'.lower(),
-    # "paymentsforrestructuring",
     "restructuringandrelatedcostexpectedcost1",
     "transformationalcostmanagement",
     "restructureandimpairmentcharges",
     "restructuringandotheractionrelatedcharges",
-    # "restructuringchargesandacquisitionrelatedcosts",
     "businessalignmentcosts",
     "restructuringassetimpairmentcharges",
     'SeveranceCosts1'.lower(),
     "onetimeterminationbenefits",
     "BusinessExitCosts".lower(),
     "businessexitcosts1",
-    # "RestructuringReserveAcceleratedDepreciation".lower(
     "ImpairmentOfLongLivedAssetsAndOtherCharges".lower(),
     "GainLossOnInvestmentsExcludingOtherThanTemporaryImpairments".lower(),
     "GainOrLossOnSaleOfPreviouslyUnissuedStockByEquityInvestee".lower(),
-
-    # TODO: Should we really include this? do some researching
-    # "IncomeLossFromEquityMethodInvestments".lower(), # GOOGL 2018
     "GainLossOnDispositionOfAssets1".lower(), # TSLA 2019
     "DeconsolidationGainOrLossAmount".lower(),
     "RestructuringSettlementAndImpairmentProvisions".lower(), # GIS 2018
     "GainLossOnSaleOfBusiness".lower(),
     "RestructuringCostsAndAssetImpairmentCharges".lower(),
     "GainLossOnInvestments".lower(), # F 2020
-    # "EquityMethodInvestmentRealizedGainLossOnDisposal".lower(),
     "DisposalGroupNotDiscontinuedOperationGainLossOnDisposal".lower(), # divestitures
     "PurchasesAndSalesOfBusinessInterests".lower(),
     "RestructuringandOtherCharges".lower(),
@@ -44,13 +37,6 @@ TAGS_RESTRUCTURING = [
     "ImpairmentIntegrationAndRestructuringExpenses".lower(),
     "RestructuringTransactionAndIntegrationCost".lower(),
     "RestructuringChargesCostOfProductsSold".lower(),
-]
-
-PREC_RESTR_TAG = [
-    # "us-gaap_GainLossOnDispositionOfAssets1".lower(),
-    # "us-gaap_RestructuringCharges".lower(),
-    # "us-gaap_RestructuringSettlementAndImpairmentProvision".lower(), # AVGO 2019
-    # "us-gaap_RestructuringSettlementAndImpairmentProvisions".lower(), # GIS 2018
 ]
 
 RESTR_BACKUPS = [
@@ -74,7 +60,7 @@ RESTR_BACKUPS = [
 class RestructuringExpenseGroup(ExpenseGroup):
     def __init__(self, instance, labels, profile):
         super().__init__(NAME_RESTRUCT, TAGS_RESTRUCTURING, instance,
-            precedent_tags=PREC_RESTR_TAG, strict_mode=True, labels=labels, profile=profile) 
+            strict_mode=True, labels=labels, profile=profile) 
 
     def supports_sector(self, sector, fact):
         if self.is_sector_financial(sector) and "investment" in fact.concept.xml_id.lower():
@@ -92,26 +78,11 @@ class RestructuringExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
 
-        concept_id = fact.concept.xml_id.lower()
         excluded_terms = ["incurredcost", "incomeloss", "paymentsfor", "netoftax", "assetimpairment"]   
-        if any(w in concept_id for w in excluded_terms):
+        if self.contains_excluded(excluded_terms):
             return False
-        if self.matches_custom_pattern(fact):
-            return True
 
-    def matches_custom_pattern(self, fact):
-        concept_id = fact.concept.xml_id.lower()
-
-        if "GainLossOnSaleOfInvestment".lower() in concept_id:
-            return True
-            
-        main_terms = ["restructuring", "deconsolidation", "realignment", "employeetermination"]
-        other_terms = ["charges?", "costs?", "expenses?"]
-        regex_patt = "(" + "|".join(main_terms) + ')(.*)(' + "|".join(other_terms) + ")$"
-        
-        res = re.search(regex_patt, concept_id)
-        # return res is not None
-        return False
+        return self.contains_match(["GainLossOnSaleOfInvestment"])
 
     def generate_cost(self, fact, label, text_blocks=None):
         return RestructuringCost(fact, label)

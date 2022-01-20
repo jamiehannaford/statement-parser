@@ -42,9 +42,6 @@ class InterestExpenseGroup(ExpenseGroup):
     def supports_sector(self, sector, fact):
         if self.is_sector_financial(sector):
             return False
-            # if any(w in fact.concept.xml_id.lower() for w in FINANCE_INTEREST):
-            #     return True 
-            # return False
 
         return True
 
@@ -61,9 +58,8 @@ class InterestExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
 
-        concept_id = fact.concept.xml_id.lower()
         excluded_terms = ["tax", "Merger", "DisposalGroup"]
-        if any((w.lower() in concept_id for w in excluded_terms)):
+        if self.contains_excluded(excluded_terms):
             return False
             
         if "InterestExpense".lower() in concept_id and "OfFinancial".lower() not in concept_id:

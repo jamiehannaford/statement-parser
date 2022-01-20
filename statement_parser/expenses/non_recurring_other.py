@@ -6,16 +6,13 @@ from xbrl.instance import NumericFact
 
 TAGS_NON_RECURRING_OTHER = [
     "payrollsupportprogramgrantrecognized",
-    # "othercostandexpenseoperating",
     "ReductionOfRightUseAssetsAndAccretionOfLeaseLiabilities".lower(),
-    # "IncomeTaxExpenseBenefitContinuingOperationsAdjustmentOfDeferredTaxAssetLiability".lower(),
     "SeverancePensionAndBenefitCharges".lower(),
     "PayrollSupportProgramOneGrant".lower(),
     "GainOnSaleOfInvestments".lower(),
     "GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee".lower(),
     "Nonoperatingpensionandotherpostretirementemployeebenefitexpenseincome".lower(),
     "IncompleteAccountingTransitionTaxForAccumulatedForeignEarningsNetProvisionalIncomeTaxExpenseBenefit".lower(),
-    # "IncomeTaxReconciliationRepatriationOfForeignEarnings".lower(),
     "IncomeTaxReconciliationChangeInEnactedTaxRate".lower(),
     "TaxCutsAndJobsActOf2017IncomeTaxExpenseBenefit".lower(),
     "AdjustmentOfWarrantsGrantedForServices".lower(),
@@ -37,14 +34,13 @@ class NonRecurringOtherExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
         
-        concept_id = fact.concept.xml_id.lower()
         excluded_terms = ["SaleOfBusiness", "aftertax", "netoftax", "DeferredIncome", "TransitionTaxExpense"]
-        if any((w.lower() in concept_id for w in excluded_terms)):
+        if self.contains_excluded(excluded_terms):
             return False
         
         terms = ["withdrawalobligation", "DeconsolidationCharge", "SpecialItemGainLoss", 
             "Retirementplansmarktomarketadjustment"]
-        return any((w.lower() in concept_id for w in terms))
+        return self.contains_match(terms)
 
 
 class NonRecurringOtherCost(Expense):

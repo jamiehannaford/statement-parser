@@ -9,6 +9,7 @@ BALANCE_TAGS_REVERSAL = [
 class Expense:
     def __init__(self, fact, label, text_blocks=None):
         self.fact = fact
+        self.id = self.fact.concept.xml_id
         self.cost = float(fact.value)
         self.parent_cost = None 
         self.child_costs = []
@@ -16,6 +17,9 @@ class Expense:
         self.label = label
         self.text_blocks = text_blocks
         self.custom = self.is_custom()
+
+    def contains_id(self, search):
+        return search in self.id
 
     def is_custom(self):
         return not self.fact.concept.xml_id.startswith("us-gaap")
@@ -97,13 +101,12 @@ class Expense:
         self.validated = True 
 
         balance = self.fact.concept.balance
-        concept_id = self.fact.concept.xml_id
 
-        if concept_id in BALANCE_TAGS_REVERSAL:
+        if self.id in BALANCE_TAGS_REVERSAL:
             self.cost *= -1
             return
 
-        if concept_id.lower().endswith("gains") and balance == "credit":
+        if self.id.lower().endswith("gains") and balance == "credit":
             self.cost *= -1
             return
 
@@ -117,10 +120,10 @@ class Expense:
 
         credit_terms = ["(credits)"]
         if balance == "credit":
-            if "PaymentsFor" in concept_id:
+            if "PaymentsFor" in self.id:
                 return
                 
-            if "GrantRecognized" in concept_id and self.cost < 0:
+            if "GrantRecognized" in self.id and self.cost < 0:
                 return
 
             if self.cost < 0 and any(t in label or t in negated_terse for t in credit_terms):

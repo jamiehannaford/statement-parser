@@ -5,15 +5,11 @@ from xbrl.instance import NumericFact
 
 TAGS_DEPR_AMORT = [
     "AmortizationOfIntangibleAssets".lower(), # ABT 2020
-
     "amortizationofintangibleassetsnotassociatedwithsinglefunction",
-    # 'restructuringreserveaccelerateddepreciation',
-    # "amortizationofinventorystepup",
     "DepreciationAndAmortization".lower(),
     "DepreciationDepletionAndAmortization".lower(),
     "DeferredPolicyAcquisitionCostAmortizationExpense".lower(), # AIG 2019
     "CostOfGoodsAndServicesSoldDepreciation".lower(), # CAR 2020
-    # "Depreciation".lower(),
     "OtherDepreciationAndAmortization".lower(),
     "AcquisitionRelatedAmortizationExpense".lower(),
     "AmortizationOfAcquisition".lower(),
@@ -23,8 +19,6 @@ TAGS_DEPR_AMORT = [
 # but others are not, like AAPL. Is there a difference here?
 
 DA_PR_TAG = [
-    # "us-gaap_DepreciationDepletionAndAmortization".lower(),
-    # "us-gaap_DepreciationAndAmortization".lower(),
     "us-gaap_AmortizationOfIntangibleAssets".lower(),
 ]
 
@@ -46,10 +40,8 @@ class DepreciationAmortizationExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
 
-        concept_id = fact.concept.xml_id.lower()
         terms = ["DepreciationAmortization", "Amortizationofintangible", "VehicleDepreciation", "RelatedDepreciationAndAmortization"]
-        if any(w.lower() in concept_id for w in terms):
-            return True
+        return self.contains_match(terms)
 
 class DepreciationAmortizationCost(Expense):
     def __init__(self, fact, label):

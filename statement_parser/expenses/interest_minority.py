@@ -39,19 +39,15 @@ class InterestMinorityExpenseGroup(ExpenseGroup):
         profit_loss = 0
 
         for cost in self.costs:
-            print(cost.fact)
-            if "ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest" in cost.fact.concept.xml_id:
+            if cost.id_contains("ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest"):
                 comprehensive = True
-            if "ProfitLoss" in cost.fact.concept.xml_id:
+            if cost.id_contains("ProfitLoss"):
                 profit_loss = cost.cost
         
         costs = []
         for cost in self.costs:
-            id = cost.fact.concept.xml_id
-            if comprehensive and "IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest" in id:
+            if comprehensive and cost.id_contains("IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest"):
                 continue
-            # if "ProfitLoss" != id and abs(cost.cost) == abs(profit_loss):
-                # continue
             costs.append(cost)
         
         return costs

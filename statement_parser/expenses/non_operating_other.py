@@ -8,33 +8,19 @@ TAGS_NON_OP_OTHER = [
     "GainLossOnContractTermination".lower(),
     "LossOnContractTermination".lower(),
     "OtherItemsOtherIncome".lower(),
-    # "MarkToMarketActivitiesNet".lower(),
     "OtherCosts".lower(),
     "COVID19Charges".lower(),
     "UnrealizedGainOnSecurities".lower(),
     "OtherExpenseByFunction".lower(),
-
     "OtherComprehensiveIncomeLossAmortizationAdjustmentFromAOCIPensionAndOtherPostretirementBenefitPlansForNetPriorServiceCostCreditBeforeTax".lower(),
-    # "DefinedBenefitPlanAmortizationOfPriorServiceCostCredit".lower(),
-    # "DefinedBenefitPlanInterestCost".lower(),
-    # "DefinedBenefitPlanExpectedReturnOnPlanAssets".lower(),
-    # "DefinedBenefitPlanActuarialGainLossImmediateRecognitionAsComponentInNetPeriodicBenefitCostCredit".lower(),
-    # "DefinedBenefitPlanRecognizedNetGainLossDueToCurtailments".lower(),
-    # "DefinedBenefitPlanAmortizationOfGainsLosses".lower(),
-
     "NetFASnonservicePensionBenefitExpense".lower(),
     "DefinedBenefitPlanActuarialGainLossImmediateRecognitionAsComponentInNetPeriodicBenefitCostCredit".lower(),
-
     "InvestmentPerformanceFees".lower(), # GOOGL 2019
     "EquitySecuritiesFvNiGainLoss".lower(), # GOOGL 2020
     "EquitySecuritiesFvNiUnrealizedGainLoss".lower(), # GOOGL 2019
     "EquitySecuritiesFvNiRealizedGainLoss".lower(), # listed as write-down in GOOGL 2019, but as restructuring in GOOGL 2020
     "GainLossOnMarketableAndNonMarketableInvestmentsNet".lower(), # GOOGL 2018
-
     "DebtSecuritiesRealizedGainLoss".lower(), # GOOGL 2020
-    # "DebtSecuritiesAvailableForSaleRealizedGain".lower(), # MSFT 2020
-    # "DebtSecuritiesAvailableForSaleRealizedLoss".lower(), # MSFT 2020
-
     "NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent".lower(), # GIS 2019, 2020
     "PensionandPostretirementBenefitExpenseExcludingCurrentServiceCost".lower(), # F 2017
     "TaxIndemnifications".lower(), # HPQ 2019
@@ -72,10 +58,7 @@ class NonOperatingOtherExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
         
-        concept_id = fact.concept.xml_id.lower()
-        
-        terms = ["FeeTemporary"]
-        return any((w.lower() in concept_id for w in terms))
+        return self.contains_match(terms)
 
 class NonOperatingOtherCost(Expense):
     def __init__(self, fact, label, text_blocks):

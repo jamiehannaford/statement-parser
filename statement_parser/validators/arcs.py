@@ -17,11 +17,6 @@ class ArcValidator:
         self.decreased_parent = []
         self.categories = categories
         self.labels = labels
-
-        for cat in self.categories:
-            if cat.name == "company-defined other":
-                self.cdo_cat = cat
-
         self.synonym_validator = SynonymValidator(instance)
 
     def tag_is_non_standard(self, child_id):
@@ -117,10 +112,6 @@ class ArcValidator:
             if cost in self.decreased:
                 continue
 
-            # print(fact, child_id, cost, balance)
-            # if fact.concept.balance == "debit":
-                # fact.value += cost
-            # else:
             fact.value -= cost
             
             self.decreased.append(cost)
@@ -152,8 +143,7 @@ class ArcValidator:
 
         if len(elem.children) == 0:
             return elem
-    
-        # if elem.concept_id in self.element_ids:
+
         highest_order = max(float(child.order) for child in elem.children)
         last_child = None
         last_child_id = None 

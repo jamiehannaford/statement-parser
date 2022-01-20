@@ -1,10 +1,10 @@
 import unittest 
 import datetime
 
-from statement_parser.parsers.xml import XMLParser
-
 from xbrl.instance import TimeFrameContext, ExplicitMember
 from xbrl.taxonomy import Concept
+
+from statement_parser.parsers.xml import XMLParser
 
 class TestXMLParser(unittest.TestCase): 
     def test_invalid_path(self):

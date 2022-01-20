@@ -10,8 +10,6 @@ TAGS_FIN = [
     "GainsLossesOnExtinguishmentOfDebt".lower(), # F 2019 
     "InvestmentIncomeNonoperating".lower(), # QCOM 2015
     "AvailableForSaleSecuritiesGrossRealizedGainLossNet".lower(),
-    # For now let's disable this, it's omitted more times than not
-    # "CashDividendsPaidToParentCompanyByConsolidatedSubsidiaries".lower(), # AIG 2018
 ]
 
 class FinancingGroup(ExpenseGroup):
@@ -25,9 +23,8 @@ class FinancingGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
 
-        concept_id = fact.concept.xml_id.lower()
         terms = ["financecosts"]
-        return any(w in concept_id for w in terms)
+        return self.contains_match(terms)
 
     def supports_sector(self, sector, fact):
         return not self.is_sector_financial(sector)

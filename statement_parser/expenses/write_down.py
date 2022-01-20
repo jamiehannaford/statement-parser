@@ -22,7 +22,6 @@ TAGS_ASSET_IMPAIRMENTS = [
     "flightequipmentoperatingleaseandinventoryimpairmentloss",
     "ImpairmentOfInvestments".lower(),
     "SpecialItemsImpairmentChargesAndOther".lower(),
-    # "impairmentofintangibleassetsfinitelived",
     "GainLossOnSalesOfAssetsAndAssetImpairmentCharges".lower(),
     "BusinessCombinationProvisionalInformationInitialAccountingIncompleteAdjustmentInventory".lower(),
     "ImpairmentOfLongLivedAssetsToBeDisposedOf".lower(),
@@ -31,7 +30,6 @@ TAGS_ASSET_IMPAIRMENTS = [
     "GoodwillAndIndefiniteLivedIntangibleAssetImpairment".lower(),
     "ImpairmentOfLongLivedAssetsHeldForUse".lower(),
     "AssetImpairmentAndAbandonmentCharges".lower(),
-
     'EquityMethodInvestmentOtherThanTemporaryImpairment'.lower(), # disabling for now
     "ResearchAndDevelopmentAssetAcquiredOtherThanThroughBusinessCombinationWrittenOff".lower(),
     "ImpairmentOfRealEstate".lower(),
@@ -79,9 +77,8 @@ class WriteDownExpenseGroup(ExpenseGroup):
         return WriteDownCost(fact, label)
 
     def is_intangible_cost(self, fact):
-        name = fact.concept.xml_id.lower()
         terms = ["intangible", "goodwill", "investment"]
-        return any(w in name for w in terms)
+        return self.contains_match(terms)
 
     def supports_sector(self, sector, fact):
         if self.is_sector_financial(sector) and self.is_intangible_cost(fact):
@@ -95,16 +92,12 @@ class WriteDownExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
         
-        concept_id = fact.concept.xml_id.lower()
         excluded_terms = ["netoftax", "amortization"]
-        if any(w in concept_id for w in excluded_terms):
+        if self.contains_excluded(excluded_terms):
             return False
 
-        main_terms = ["inventory", "asset"]
-        other_terms = ["impairments", "stepup"]
-        return all(
-            (any(w in concept_id for w in main_terms), 
-            any(w in concept_id for w in other_terms)))
+        return self.contains_match(["inventory", "asset"]) \
+            or self.contains_match(["impairments", "stepup"])
 
 class WriteDownCost(Expense):
     def __init__(self, fact, label):

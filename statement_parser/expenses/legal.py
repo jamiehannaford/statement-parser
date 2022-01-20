@@ -10,7 +10,6 @@ TAGS_LEGAL = [
     "PaymentsForLegalSettlements".lower(),
     "LitigationSettlementExpense".lower(),
     "DefinedBenefitPlanRecognizedNetGainLossDueToSettlements1".lower(),
-    # "LitigationExpenseExcludingLegalServiceProvider".lower(),
 ]
 
 class LegalExpenseGroup(ExpenseGroup):
@@ -25,10 +24,8 @@ class LegalExpenseGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
 
-        concept_id = fact.concept.xml_id.lower()
         terms = ["TaxIndemnificationArrangement", "LitigationExpense"]
-        if any(w.lower() in concept_id for w in terms):
-            return True
+        return self.contains_match(terms)
 
     def generate_cost(self, fact, label, text_blocks=None):
         return LegalCost(fact, label)

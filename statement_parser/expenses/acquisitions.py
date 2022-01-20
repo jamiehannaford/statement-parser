@@ -29,11 +29,10 @@ class AcquisitionsMergerGroup(ExpenseGroup):
         if not isinstance(fact, NumericFact):
             return False
 
-        concept_id = fact.concept.xml_id.lower()
         excluded_terms = ["restructuring", "gainloss", "amortization", "proceedsfrom", 
             "policyacquisition", "PolicyBenefitReserves", "relatedparty", "unallocated", 
-            "stepup", "hedges", "potential"]   
-        if any(w.lower() in concept_id for w in excluded_terms):
+            "stepup", "hedges", "potential"]
+        if self.contains_excluded(excluded_terms):
             return False
 
         main_terms = ["acquisition", "transaction", "merger", "businesscombination"]

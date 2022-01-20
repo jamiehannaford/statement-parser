@@ -24,6 +24,12 @@ class ExpenseGroup:
         self.filter_highest_only = False
         self.profile = profile
 
+    def contains_excluded(self, excluded_terms):
+        return any(w.lower() in self.id.lower() for w in excluded_terms)
+
+    def contains_match(self, terms):
+        return any(w.lower() in self.id.lower() for w in terms):
+
     def load_root_concepts(self):
         root_concept_ids = []
         for elr in self.instance.taxonomy.link_roles:
@@ -126,15 +132,13 @@ class ExpenseGroup:
             if cost.cost == 0 or cost.cost in vals:
                 continue
             
-            concept_id = cost.fact.concept.xml_id
-            
-            if concept_id not in concepts:
-                concepts[concept_id] = []
+            if cost.id not in concepts:
+                concepts[cost.id] = []
 
-            if self.contains_similar_context(cost, concepts[concept_id]):
+            if self.contains_similar_context(cost, concepts[cost.id]):
                 continue
 
-            concepts[concept_id].append(cost)
+            concepts[cost.id].append(cost)
             vals.append(cost.cost)
 
         return concepts
@@ -147,7 +151,7 @@ class ExpenseGroup:
                 if search_term not in highest_costs:
                     highest_costs[search_term] = 0
 
-                res = re.search(search_term.lower(), cost.fact.concept.xml_id.lower(), re.IGNORECASE)
+                res = re.search(search_term.lower(), cost.id.lower(), re.IGNORECASE)
                 if res and abs(cost.cost) > abs(highest_costs[search_term]):
                     highest_costs[search_term] = cost.cost
         
@@ -163,7 +167,7 @@ class ExpenseGroup:
                 if cost in excluded:
                     continue                
                 
-                res = re.search(search_term.lower(), cost.fact.concept.xml_id.lower(), re.IGNORECASE)
+                res = re.search(search_term.lower(), cost.id.lower(), re.IGNORECASE)
                 if res and cost.cost != highest_costs[search_term]:
                     excluded.append(cost)
                     continue
@@ -187,10 +191,9 @@ class ExpenseGroup:
 
         if self.backup_costs and not self.processed_precendent_tags:
             for backup_cost in self.backup_costs:
-                concept_id = backup_cost.fact.concept.xml_id
-                if self.back_up_permitted(concepts, concept_id):
+                if self.back_up_permitted(concepts, cost.id):
                     costs.append(backup_cost)
-                    concepts[concept_id] = [backup_cost]
+                    concepts[cost.id] = [backup_cost]
 
             costs = self.group_specific_processing(costs)
             concepts = self.process_concepts(costs, text_facts=text_facts)
@@ -295,8 +298,7 @@ class ExpenseGroup:
 
         has_pt = False
         for cost in input_costs:
-            concept_id = cost.fact.concept.xml_id.lower()
-            if concept_id in self.precedent_tags:
+            if cost.id.lower() in self.precedent_tags:
                 has_pt = True
 
         if not has_pt:
@@ -304,8 +306,7 @@ class ExpenseGroup:
 
         costs = []
         for cost in input_costs:
-            concept_id = cost.fact.concept.xml_id.lower()
-            if concept_id in self.precedent_tags or cost.fact.protected or cost.custom:
+            if cost.id.lower() in self.precedent_tags or cost.fact.protected or cost.custom:
                 costs.append(cost)
 
         self.processed_precendent_tags= True
@@ -331,10 +332,9 @@ class ExpenseGroup:
     def filter_dimension(self, costs):
         concepts = {}
         for cost in costs:
-            concept_id = cost.fact.concept.xml_id 
-            if concept_id not in concepts:
-                concepts[concept_id] = []
-            concepts[concept_id].append(cost)
+            if cost.id not in concepts:
+                concepts[cost.id] = []
+            concepts[cost.id].append(cost)
 
         output = []
         for concept, costs in concepts.items():
@@ -358,10 +358,9 @@ class ExpenseGroup:
     def dedupe_prefixes(self, costs):
         concept_map = {}
         for cost in costs:
-            concept_id = cost.fact.concept.xml_id
-            if concept_id not in concept_map:
-                concept_map[concept_id] = []
-            concept_map[concept_id].append(cost)
+            if cost.id not in concept_map:
+                concept_map[cost.id] = []
+            concept_map[cost.id].append(cost)
         
         keys = concept_map.copy().keys()
         for concept_id in keys:

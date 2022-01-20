@@ -3,13 +3,7 @@ from statement_parser.expense_group import ExpenseGroup
 from statement_parser.expenses.constants import NAME_DISC_OPS
 
 TAGS_DISCONTINUED_OPS = [
-    # "incomelossfromdiscontinuedoperationsnetoftax",
-    # 'incomelossfromdiscontinuedoperationsnetoftaxattributabletoreportingentity',
-
     "gainlossondispositionofassets",
-    # "DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax".lower(),
-    # "DiscontinuedOperationIncomeLossFromDiscontinuedOperationDuringPhaseOutPeriodNetOfTax".lower(),
-
     "GainLossOnSaleOfProperties".lower(),
     "GainLossOnSaleOfPropertyPlantEquipment".lower(),
     "GainOnDivestmentOfInterestsInAssociatedCompanies".lower(),
