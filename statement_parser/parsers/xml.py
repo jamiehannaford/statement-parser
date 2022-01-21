@@ -39,7 +39,16 @@ class XMLParser:
         self.fd_m = self.fd_str[4:6]
         self.fd_d = self.fd_str[6:]
         self.filing_date_end = date(int(self.fd_y), int(self.fd_m), int(self.fd_d))
-        self.filing_date_start = self.filing_date_end - relativedelta(years=1, months=1)
+
+        self.filing_type = '10-K'
+        for f in self.instance.facts:
+            if "DocumentType" in f.concept.xml_id:
+                self.filing_type = f.value
+
+        if self.filing_type == '10-K':
+            self.filing_date_start = self.filing_date_end - relativedelta(years=1, months=1)
+        else:
+            self.filing_date_start = self.filing_date_end - relativedelta(months=3, weeks=1)
 
     def load_htm_parser(self, path):
         res = glob.glob(f"{os.path.dirname(path)}/*.htm")
@@ -74,7 +83,7 @@ class XMLParser:
 
         for ctx_id, ctx in self.instance.context_map.items():
             should_append = False
-            
+
             if isinstance(ctx, TimeFrameContext) and self.valid_range(ctx):
                 should_append = True
             

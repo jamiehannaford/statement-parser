@@ -131,7 +131,7 @@ class Expenses:
 
         for validator in validation_chain:
             self.facts = validator.process(self.facts)
-            # self.inspect_fact(validator, "SeveranceCosts1")
+            # self.inspect_fact(validator, "InvestmentIncomeInterestAndDividend")
 
         cat_map = {}
         for category in self.categories:

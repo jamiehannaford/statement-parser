@@ -28,7 +28,7 @@ logging.getLogger("xbrl.cache").setLevel(logging.WARNING)
 class Downloader:
     root_dir = "data"
 
-    def __init__(self, ticker, cik=None, filing_type="10-K"):
+    def __init__(self, ticker, cik=None, filing_type="10-K", num_quarters=4):
         self.cache = HttpCache('./cache/')
 
         self.filing_type = filing_type
@@ -38,6 +38,7 @@ class Downloader:
 
         self.set_ticker(ticker, cik)
         self.set_cik(cik, ticker)
+        self.num_quarters = num_quarters
 
     def set_ticker(self, ticker, cik):
         if not ticker:
@@ -66,16 +67,24 @@ class Downloader:
 
         self.cik = cik.zfill(10)
 
+    def get_from_date(self):
+        if self.filing_type == '10-K':
+            return date(now.year-5, 1, 1).strftime("%Y-%m-%d")
+        else:
+            return date(now.year-1, 1, 1).strftime("%Y-%m-%d")
+
     def get_urls(self, from_date=None, to_date=None):
         now = datetime.now()
         if not from_date:
-            from_date = date(now.year-5, 1, 1).strftime("%Y-%m-%d")
+            from_date = self.get_from_date()
         if not to_date:
             to_date = now.strftime("%Y-%m-%d")
 
         count = int(to_date[:4]) - int(from_date[:4])
         if count <= 0:
             count = 1
+        if self.filing_type == '10-Q':
+            count = self.num_quarters
 
         return get_filing_urls_to_download(self.filing_type, self.cik, count, from_date, to_date, False)
 
@@ -159,8 +168,6 @@ class Downloader:
             self.download_file(updated_url, download_path_xml)
 
     def download(self, last=None, from_date=None, to_date=None, only_html=False):
-        file_dir = f"data/{self.ticker}/10-k"
-
         if last:
             from_date = f"{int(datetime.now().year) - int(last)}-01-01"
 
