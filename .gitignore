@@ -144,3 +144,6 @@ cython_debug/
 
 tmp/
 stock-data
+
+config/
+*.egg-info/

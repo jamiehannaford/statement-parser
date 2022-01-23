@@ -1,0 +1,5 @@
+FROM polkaned/expressvpn
+
+COPY scripts/run_vpn.sh .
+
+ENTRYPOINT ["/bin/bash", "run_vpn.sh"]

@@ -11,10 +11,14 @@ pytz==2021.1
 requests==2.26.0
 six==1.16.0
 soupsieve==2.2.1
-statement-parser @ file:///Users/jamie/projects/jamie/statement-parser
 urllib3==1.26.6
 tabulate==0.8.9
 py-xbrl==2.0.7
 sec_edgar_downloader==4.2.2
 pyperclip==1.8.2
 secedgar==0.3.3
+rq==1.10.1
+ratelimit==2.2.1
+faker==0.7.3
+mysql-connector-python==8.0.28
+backoff==1.11.1

@@ -9,16 +9,18 @@ import zipfile
 from threading import Thread
 from queue import Queue
 import sys
+import time
 
 from bs4 import BeautifulSoup
 import requests
 from requests.exceptions import HTTPError
-from statement_parser.utils import get_filing_urls_to_download, random_str
 from xbrl import TaxonomyNotFound
 from xbrl.cache import HttpCache
 from xbrl.instance import parse_xbrl, parse_xbrl_url, XbrlInstance
 from secedgar.filings.filing import Filing
 from secedgar.filings.filing_types import FilingType
+from faker import Faker
+import mysql.connector
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -58,6 +60,10 @@ class Downloader:
         res = requests.get(url).json()
         return res[0]["cik"]    
 
+    def user_agent(self):
+        fake = Faker()
+        return f"{fake.first_name()} {fake.last_name()} {fake.email()}"
+
     def set_cik(self, cik, ticker):
         if not cik:
             try:
@@ -68,6 +74,7 @@ class Downloader:
         self.cik = cik.zfill(10)
 
     def get_from_date(self):
+        now = datetime.now()
         if self.filing_type == '10-K':
             return date(now.year-5, 1, 1).strftime("%Y-%m-%d")
         else:
@@ -86,10 +93,26 @@ class Downloader:
         if self.filing_type == '10-Q':
             count = self.num_quarters
 
-        return get_filing_urls_to_download(self.filing_type, self.cik, count, from_date, to_date, False)
+        db = mysql.connector.connect(       
+            host=os.environ['MYSQL_HOST'],
+            user=os.environ['MYSQL_USER'],
+            password=os.environ['MYSQL_PASS'],
+            database='expensifier'
+        )
+        cur = db.cursor()
+
+        query = "SELECT filing_date, accession_number, filing_type FROM filing_meta WHERE cik = %s AND filing_date BETWEEN %s and %s"
+        values = (self.cik, from_date, to_date)
+        cur.execute(query, values) 
+        res = cur.fetchall()
+
+        cur.close()
+        db.close()
+
+        return res
 
     def download_url(self, url):
-        self.cache.set_headers({"User-Agent": random_str()})
+        self.cache.set_headers({"User-Agent": self.user_agent()})
         parse_xbrl_url(url, self.cache)
 
     def download_zip(self, url, path):
@@ -102,7 +125,7 @@ class Downloader:
         os.remove(zip_path)
 
     def download_file(self, url, save_path, chunk_size=128):
-        r = requests.get(url, stream=True, headers={"User-Agent": random_str()})
+        r = requests.get(url, stream=True, headers={"User-Agent": self.user_agent()})
         r.raise_for_status()
         with open(save_path, 'wb') as fd:
             for chunk in r.iter_content(chunk_size=chunk_size):
@@ -117,6 +140,7 @@ class Downloader:
             url = q.get()
             try:
                 self.fetch_url(url, only_html)
+                time.sleep(1) # avoid rate limiting
             except Exception as e:
                 print(f"Error: {str(e)}")
             q.task_done()
@@ -126,21 +150,19 @@ class Downloader:
         parse_xbrl_url(url, self.cache)
 
     def fetch_url(self, url_map, only_html):
-        filing_dir = os.path.join(self.root_dir, self.ticker, url_map.period_ending)
-
-        download_path_htm = os.path.join(filing_dir, os.path.basename(url_map.filing_details_url))
+        date_formatted = url_map[0].strftime("%Y%m%d")
+        filing_dir = os.path.join(self.root_dir, self.ticker, date_formatted)
         
-        if only_html:
-            self.download_file(url_map.filing_details_url, download_path_htm)
-            return
-
-        if glob.glob(f"{filing_dir}*"):
+        if glob.glob(f"{filing_dir}*/*.xml"):
             print(f"{filing_dir} already exists")
             return
-        
-        print(f"Downloading {url_map.zip_url}...")
+
+        an_formatted = url_map[1].replace("-", "")
+        zip_url = f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{an_formatted}/{url_map[1]}-xbrl.zip"
+
+        print(f"Downloading {zip_url}...")
         try:
-            self.download_zip(url_map.zip_url, filing_dir)
+            self.download_zip(zip_url, filing_dir)
         except HTTPError:
             shutil.rmtree(filing_dir)
             print("could not download zip, skipping...")
@@ -150,22 +172,14 @@ class Downloader:
             if unneeded_file.endswith((".xml", ".xsd")):
                 continue 
             os.remove(unneeded_file)
-        
-        updated_url = url_map.filing_details_xml
-        if int(url_map.period_ending[:4]) >= 2019:
-            updated_url = url_map.filing_details_htm
 
-        download_path_xml = os.path.join(filing_dir, os.path.basename(updated_url))
-
-        # Download HTML iXBRL file
-        self.download_file(url_map.filing_details_url, download_path_htm)
-
-        # Download XML instance file
-        try:
-            self.download_file(updated_url, download_path_xml)
-        except:
-            updated_url = f"{url_map.submission_base_url}/{self.ticker.lower()}-{url_map.period_ending}.xml"
-            self.download_file(updated_url, download_path_xml)
+        res = requests.get(f"https://www.sec.gov/Archives/edgar/data/{self.cik}/{an_formatted}", headers={"User-Agent": self.user_agent()})
+        soup = BeautifulSoup(res.text, "html.parser")
+        link = soup.findAll("a", href=lambda x: x and x.endswith("_htm.xml"))
+        if link:
+            htm_path = link[0].attrs['href'].strip("/")
+            html_url = f"https://www.sec.gov/{htm_path}"
+            self.download_file(html_url, os.path.join(filing_dir, os.path.basename(htm_path)))
 
     def download(self, last=None, from_date=None, to_date=None, only_html=False):
         if last:

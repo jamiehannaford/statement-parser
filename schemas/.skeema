@@ -1,0 +1,7 @@
+generator=skeema:1.6.0-community
+
+[production]
+flavor=mysql:5.6
+host=mysql
+port=3306
+user=root
