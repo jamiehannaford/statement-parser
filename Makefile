@@ -31,8 +31,8 @@ run-expenses: run-worker
 
 .PHONY: attach-mysql
 attach-mysql:
-	kubectl exec -it $(shell kubectl get pod -l app=mysql -o name) -- mysql -u root -p$(DB_PASS) -h mysql
+	kubectl exec -it $(shell kubectl get pod -l app=mysql -o name) -- mysql -u root -p$(DB_PASS) -h mysql -D expensifier
 
 .PHONY: tail
 tail:
-	kubectl logs -f job/job-process-expenses
+	kubectl logs -f $(shell kubectl get job -l app=worker -o name | head -n 1) -c worker

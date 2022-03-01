@@ -22,3 +22,4 @@ ratelimit==2.2.1
 faker==0.7.3
 mysql-connector-python==8.0.28
 backoff==1.11.1
+matplotlib==3.5.0

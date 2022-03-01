@@ -147,3 +147,5 @@ stock-data
 
 config/
 *.egg-info/
+.workers 
+.env

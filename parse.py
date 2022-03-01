@@ -16,7 +16,7 @@ from download import Downloader
 
 class Parser:
     def __init__(self, ticker, num_quarters=4, year=False, compare=False, verbose=False, filing_type='10-K',
-        cik='', json=False, ttm=False, quarter=False, save_mysql=False):
+        cik='', json=False, ttm=False, quarter=False, save_mysql=False, force=False):
         self.ticker = ticker 
         self.num_quarters = num_quarters
         self.year = year
@@ -28,6 +28,7 @@ class Parser:
         self.ttm = ttm
         self.quarter = quarter
         self.save_mysql = save_mysql
+        self.force = force
         
         if not (self.ticker or self.cik):
             raise RuntimeError('No ticker or cik provided')
@@ -62,7 +63,14 @@ class Parser:
             exts = ('_cal.xml', '_def.xml', '_lab.xml', '_pre.xml')
             if filing.endswith(exts):
                 continue
+
+            print(f"Processing {filing}")
             
+            existing = self.existing_filing(filing)
+            if existing and not self.force:
+                print("Filing already exists in DB...")
+                continue
+
             compare_file = None 
             if self.compare:
                 compare_file = f"../stock-data/{self.ticker}.json"
@@ -70,13 +78,16 @@ class Parser:
             parser = XMLParser(filing, to_json=self.json, compare_file=compare_file, verbose=self.verbose)
             output = parser.process()
 
-            if self.num_quarters:
+            if self.num_quarters and not self.save_mysql:
                 ttm_values[parser.fd_str] = {'type': parser.filing_type}
                 for key, val in output.items():
                     ttm_values[parser.fd_str][key] = val
                 continue
 
-            if self.json:
+            if self.save_mysql:
+                self.persist(parser, output)
+                print("Finished processing")
+            elif self.json:
                 print(json.dumps(output))
             else:
                 print("XML file:", filing)
@@ -84,22 +95,47 @@ class Parser:
                 print("="*50)
                 print()
 
-        if self.num_quarters:
-            if self.save_mysql:
-                self.persist(parser, output)
-            else: 
-                print(json.dumps(ttm_values))
+        if self.num_quarters and not self.save_mysql:
+            print(json.dumps(ttm_values))
+
+    def existing_filing(self, filing):
+        dir_parts = os.path.dirname(filing).split("/")
+        ticker = dir_parts[1]
+        filing_date = dir_parts[2][:4] + "-" + dir_parts[2][4:6] + "-" + dir_parts[2][6:]
+
+        db = mysql.connector.connect(
+            host=os.environ['MYSQL_HOST'],
+            user=os.environ['MYSQL_USER'],
+            password=os.environ['MYSQL_PASS'],
+            port=os.environ['MYSQL_PORT'],
+            database='expensifier'
+        )
+
+        query = "SELECT * FROM filings WHERE ticker = %s AND filing_date = %s"
+        
+        curs = db.cursor()
+        curs.execute(query, (ticker, filing_date))
+        col_names = [i[0] for i in curs.description]
+
+        res = curs.fetchone()
+        for key, item in enumerate(res):
+            print(f"{col_names[key]}={item}")
+
+        curs.close()
+        db.close()
+        return res
 
     def persist(self, parser, output):
         db = mysql.connector.connect(
             host=os.environ['MYSQL_HOST'],
             user=os.environ['MYSQL_USER'],
             password=os.environ['MYSQL_PASS'],
+            port=os.environ['MYSQL_PORT'],
             database='expensifier'
         )
 
         query = """
-        INSERT INTO filings (
+        INSERT IGNORE INTO filings (
             ticker, filing_date, filing_type,
             expenses_restructuring,
             expenses_depreciation_amortization,
@@ -169,6 +205,7 @@ if __name__ == "__main__":
     parser.add_argument('-k', '--cik', help='The CIK')
     parser.add_argument('-j', '--json', default=False, action='store_true', help='Output to JSON')
     parser.add_argument('-r', '--ttm', default=False, action='store_true', help='The TTM value for this company')
+    parser.add_argument('-z', '--force', default=False, action='store_true', help='Ignores previously saved values')
     parser.add_argument('-q', '--quarter', help='The specific quarter')
     parser.add_argument('-n', '--num-quarters', type=int, help='The number of quarters from now dating backwards')
 

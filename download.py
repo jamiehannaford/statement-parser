@@ -97,6 +97,7 @@ class Downloader:
             host=os.environ['MYSQL_HOST'],
             user=os.environ['MYSQL_USER'],
             password=os.environ['MYSQL_PASS'],
+            port=os.environ['MYSQL_PORT'],
             database='expensifier'
         )
         cur = db.cursor()
